@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style2.css" type="text/css">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Gothic+A1:700|Nanum+Gothic" rel="stylesheet"> -->
+</head>
+
+<body>
+    <div id='aaa'>
+    </div>
+
+
+    <script src="./jquery-3.2.1.min.js"></script>
+    <script>
+        function makeLeft(x) {
+            var trArray = [0, 5, 10, 15, 20];
+            var closeTrArray = [4, 9, 14, 19, 24];
+            let leftTable = '';
+            for (var j = 0; j < 25; j++) {
+                if (trArray.includes(j)) {
+                    leftTable += `<tr><td class='tdLeft'><font size='${leftfontsize}'><font color='grey'>${x[j]}</td>`;
+                } else if (closeTrArray.includes(j)) {
+                    leftTable += `<td class='tdLeft'><font size='${leftfontsize}'><font color='grey'>${x[j]}</td></tr>`;
+                } else {
+                    leftTable += `<td class='tdLeft'><font size='${leftfontsize}'><font color='grey'>${x[j]}</td>`;
+                }
+            }
+            return leftTable;
+        }
+
+        function makeRight(i) {
+            var trArray = [1, 6, 11, 16, 21, 26, 31, 36, 41, 46];
+            var closeTrArray = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+            var rightTable = '';
+            for (var x = 1; x < 51; x++) {
+                if ((trArray.includes(x)) && (i.includes(x))) {
+                    rightTable += "<tr><td width='" + righttdwidth + "'><font Color = 'red'><font size='" + rightfontsize + "'>" + x + "</td>";
+                } else if ((closeTrArray.includes(x)) && (i.includes(x))) {
+                    rightTable += "<td width='" + righttdwidth + "'><font Color = 'red'><font size='" + rightfontsize + "'>" + x + "</td></tr>";
+                } else if (i.includes(x)) {
+                    rightTable += "<td width='" + righttdwidth + "'><font Color = 'red'><font size='" + rightfontsize + "'>" + x + "</td>";
+                } else if (trArray.includes(x)) {
+                    rightTable += "<tr><td width='" + righttdwidth + "'><font Color = 'grey'><font size='" + rightfontsize + "'>" + x + "</td>";
+                } else if (closeTrArray.includes(x)) {
+                    rightTable += "<td width='" + righttdwidth + "'><font Color = 'grey'><font size='" + rightfontsize + "'>" + x + "</td></tr>";
+                } else {
+                    rightTable += "<td width='" + righttdwidth + "'><font Color = 'grey'><font size='" + rightfontsize + "'>" + x + "</td>";
+                }
+            }
+
+            return rightTable;
+        }
+
+        function check(i) {
+            let coment;
+            if (i.includes(essential_number)) {
+                comment = "/* " + essential_number + "은 지우고 시작하세요. klassauto.com";
+            } else {
+                elert('필수숫자가 없어요!');
+            }
+            return comment;
+        }
+
+        var bingo = [];
+        var essential_number = 1;
+        var leftfontsize = 5;
+        var rightfontsize = 4;
+        var leftdwidth = 32;
+        var righttdwidth = 32;
+        let gameCount;
+        let title;
+
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1;
+        let date = today.getDate();
+        let hour = today.getHours();
+        let minute = today.getMinutes();
+        let second = today.getSeconds();
+
+        let footer = `<footer class="" style="height:25%;text-align:center;">
+      <font size="2">Copyright &copy; Lylla (info@leaseman.co.kr) Version3<br>공유오피스 비즈피스 <a href="http://www.bizffice.co.kr" target="_blank">www.bizffice.co.kr</a> | 신차렌트리스 클라스오토(<a href="http://www.klassauto.com" target="_blank">www.klassauto.com</a>)</font></footer><hr>`;
+
+        $(document).ready(function () {
+            gameCount = prompt('게임인원은 총 몇명인가요?');
+            gameCount = Number(gameCount);
+
+            if (gameCount < 0) {
+                alert('게임인원은 반드시 1명 이상이어야 합니다.')
+                return false;
+            } else if (gameCount > 20) {
+                alert('최대 20명 출력입니다.');
+                return false();
+            } else if (gameCount >= 1) {
+                alert('총 ' + gameCount + '개의 게임이 출력됩니다 :)');
+            } else {
+                alert('숫자를 입력해야만 합니다.^^;')
+                return false;
+            }
+
+            for (var i = 0; i < gameCount; i++) {
+                let bingoGame = [];
+
+                for (var j = 0; j < 3; j++) {
+                    let bingoGameEle = [];
+                    do {
+                        var inputNum = Math.floor(Math.random() * 50 + 1);
+                        if (!(bingoGameEle.includes(inputNum))) {
+                            bingoGameEle.push(inputNum);
+                        }
+                    } while (bingoGameEle.length < 25); //빙고배열생성
+
+                    var replaceIndex = Math.floor(Math.random() * 25); //essential_number 포함
+                    if (!(bingoGameEle.includes(essential_number))) {
+                        bingoGameEle.splice(replaceIndex, 1, essential_number);
+                    }
+                    bingoGame.push(bingoGameEle);
+                    // console.log(bingoGameEle);
+                }
+                bingo.push(bingoGame);
+            }// 빙고배열 생성
+
+            // console.log(bingo);
+
+            for (var x = 0; x < gameCount; x++) {
+                let bingoxx = bingo[x];
+                title = `<div class=titleee>
+                    <div class=leftii><label class="largeee">Person No.${x + 1}</label></div>
+                    <div class=rightii><label class="smallee">출력일시 : ${year}-${month}-${date} ${hour}:${minute}:${second} Copyright @Lylla V-3</label></div>
+                  </div>`;
+
+                $('#aaa').append(title);
+
+                for (var y = 0; y < 3; y++) {
+                    let bingoxy = bingoxx[y];
+                    let ordered = [];
+                    if (y === 0) {
+                        ordered[0] = "firstGame";
+                        ordered[1] = "첫번째 게임";
+                        ordered[2] = "<hr>";
+                    } else if (y === 1) {
+                        ordered[0] = "secondGame";
+                        ordered[1] = "두번째 게임";
+                        ordered[2] = "<hr>";
+                    } else {
+                        ordered[0] = "thirdGame";
+                        ordered[1] = "세번째 게임";
+                        ordered[2] = "<hr>";
+                    }
+                    let left = `<div class=${ordered[0]}>
+                          <div class=left>
+                            <label>${ordered[1]}</label><label class=smallee>${check(bingoxy)}</label>
+                            <table width=300>${makeLeft(bingoxy)}</table>
+                          </div>
+                          <div class=right>
+                            <h3>숫자판</h3>
+                            <table>${makeRight(bingoxy)}</table>
+                          </div>
+                        </div>
+                        ${ordered[2]}`;
+
+                    // console.log(bingoxy);
+
+
+                    $('#aaa').append(left);
+                }
+                // $('#aaa').append(footer);
+
+            }
+
+        })//document.ready }
+
+
+
+
+
+
+
+    </script>
+
+    <!-- <footer class="" style="height:25%;text-align:center;">
+      <font size="2">
+      Copyright &copy; Jinhee,Yu (info@leaseman.co.kr) Version3<br>
+      <a href="http://www.bizffice.co.kr" target="_blank">www.bizffice.co.kr</a> | 신차렌트리스 클라스오토(<a href="http://www.klassauto.com" target="_blank">www.klassauto.com</a>)
+      </font>
+    </footer> -->
+</body>
+
+</html>
+<!-- 2020.3.12 업데이트 -->

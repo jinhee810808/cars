@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/earlyaccess/jejugothic.css");
+@import url("https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;200;300;400&display=swap");
+
+h1,
+h2,
+h3,
+h4,
+.navbar-brand {
+  font-family: "Jeju Gothic";
+}
+
+.firstGame {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.secondGame {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 30px;
+}
+.thirdGame {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 30px;
+}
+.tdLeft {
+  border: solid 1px grey;
+  text-align: center;
+  height: 45px;
+}
+div {
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  /* border : 1px solid grey; */
+}
+h2 {
+  color: grey;
+}
+h3 {
+  color: grey;
+  margin-top: auto;
+  margin-bottom: 0px;
+}
+label {
+  font-size: x-large;
+  font-weight: bold;
+  color: grey;
+}
+.largeee {
+  font-size: x-large;
+  font-weight: bold;
+  color: grey;
+  font-family: "Jeju Gothic";
+}
+.smallee {
+  font-size: small;
+  color: skyblue;
+  font-style: italic;
+  text-align: end;
+}
+p {
+  margin-top: 17px;
+  margin-bottom: 17px;
+}
+span {
+  font-style: italic;
+  color: skyblue;
+  font-size: 10px;
+}
+table {
+  margin-top: 2px;
+  color: grey;
+}
+.titleee {
+  padding-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.leftii {
+  text-align: left;
+}
+.rightii {
+  text-align: right;
+}
