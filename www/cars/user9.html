@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>운행일지 프로그램 - 이용자용</title>
+    <title>이용자 운행일지</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,17 +37,10 @@
 </head>
 <body class="bg-slate-100 text-gray-800 min-h-screen flex flex-col">
 
-    <!-- 1. 로그인 스크린 (PC 중앙 배치 카드) -->
-    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
+    <!-- 1. 로그인 스크린 (중앙 배치 카드 + 하단 일시/인사말) -->
+    <div id="login-screen" class="min-h-screen flex flex-col items-center justify-center p-4">
         <div class="max-w-md w-full bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-xl">
-            <div class="text-center mb-8">              
-                
-                <div class="flex justify-center mb-4">
-                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center border border-blue-100 shadow-sm">
-                        <i class="fa-solid fa-clipboard-check text-3xl text-blue-600"></i>
-                    </div>
-                </div>
-                
+            <div class="text-center mb-8">
                 <!-- KlassAuto 파란색 브랜드 로고 이미지 -->
                 <div class="flex justify-center items-center mb-2">
                     <img src="img/logo_blue.png" alt="KlassAuto" class="h-16 sm:h-20 w-auto object-contain drop-shadow-sm">
@@ -82,10 +75,24 @@
                 </div>
 
                 <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-base shadow-lg shadow-blue-500/25 transition duration-200 mt-2">
-                    접속하기
+                    이용자 시스템 접속
                 </button>
             </form>
             <p id="login-error" class="text-red-500 text-sm text-center mt-3 hidden font-semibold">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+        </div>
+
+        <!-- 🌟 [추가] 로그인 카드 하단 실시간 일시/시계 및 인사말(명언) 영역 -->
+        <div class="mt-8 text-center max-w-4xl w-full px-4 space-y-3">
+            <!-- 1. 날짜 및 실시간 시/분/초 뱃지 -->
+            <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white border border-slate-200 text-blue-600 text-sm sm:text-base font-bold shadow-sm">
+                <i class="fa-regular fa-calendar-check text-blue-500 text-base sm:text-lg"></i>
+                <span id="login-today-date" class="text-slate-700">날짜를 불러오는 중...</span>
+            </div>
+
+            <!-- 2. 대형 인사말 / 오늘의 명언 문구 -->
+            <p id="login-daily-greeting" class="text-lg sm:text-xl md:text-2xl text-slate-700 font-bold leading-normal break-keep drop-shadow-xs">
+                인사말을 불러오는 중입니다...
+            </p>
         </div>
     </div>
 
@@ -400,6 +407,103 @@
         let MOCK_USERS = [];
         let MOCK_VEHICLES = [];
         let MOCK_HISTORIES = [];
+
+        // ----------------------------------------------------
+        // 🌟 [추가] 오늘 날짜 및 실시간 시/분/초 표출 함수 (한국어 형식)
+        // ----------------------------------------------------
+        function displayTodayDate() {
+            const dateEl = document.getElementById('login-today-date');
+            if (!dateEl) return;
+            
+            const now = new Date();
+            const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const dayName = days[now.getDay()];
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            dateEl.innerText = `${year}년 ${month}월 ${date}일 ${dayName} ${hours}:${minutes}:${seconds}`;
+        }
+
+        // ----------------------------------------------------
+        // 🌟 [추가] hello.csv에서 랜덤 인사말/명언 불러오기 (3번째 열 추출)
+        // ----------------------------------------------------
+        async function loadRandomGreetingFromCSV() {
+            const greetingEl = document.getElementById('login-daily-greeting');
+            if (!greetingEl) return;
+
+            const defaultGreetings = [
+                "오늘 하루도 힘차고 활기차게 화이팅하세요!",
+                "안전운전이 최고의 배려이자 행복입니다."
+            ];
+
+            try {
+                const response = await fetch(`csv/hello.csv?t=${new Date().getTime()}`);
+                if (!response.ok) throw new Error("csv/hello.csv 로드 실패");
+
+                const text = await response.text();
+                const lines = text.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
+                const greetings = [];
+
+                lines.forEach((line, idx) => {
+                    const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(p => 
+                        p.trim().replace(/^["']|["']$/g, '').trim()
+                    );
+
+                    if (parts.length >= 3) {
+                        const targetText = parts[2];
+                        if (idx === 0 && (targetText.includes("명언") || targetText.includes("내용") || targetText.includes("문구") || targetText.includes("quote") || targetText.includes("greeting"))) {
+                            return;
+                        }
+                        if (targetText && targetText.length > 0) {
+                            greetings.push(targetText);
+                        }
+                    } else if (parts.length > 0 && parts[0]) {
+                        greetings.push(parts[parts.length - 1]);
+                    }
+                });
+
+                if (greetings.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * greetings.length);
+                    greetingEl.innerText = greetings[randomIndex];
+                } else {
+                    greetingEl.innerText = defaultGreetings[Math.floor(Math.random() * defaultGreetings.length)];
+                }
+            } catch (err) {
+                console.warn("csv/hello.csv 로드 실패 (기본 문구 표시):", err);
+                greetingEl.innerText = defaultGreetings[Math.floor(Math.random() * defaultGreetings.length)];
+            }
+        }
+
+        // ----------------------------------------------------
+        // 0. 🚀 페이지 로드 시 초기화
+        // ----------------------------------------------------
+        document.addEventListener("DOMContentLoaded", async () => {
+            // 🌟 로그인 화면용 시계 및 인사말 실행
+            displayTodayDate();
+            setInterval(displayTodayDate, 1000); // 1초마다 실시간 시/분/초 갱신
+            loadRandomGreetingFromCSV();
+
+            // 상단 바 명언
+            setRandomQuote();
+
+            const savedUser = localStorage.getItem("car_system_user");
+            if (savedUser) {
+                try {
+                    const userInfo = JSON.parse(savedUser);
+                    applyLoginState(userInfo);
+                    await loadServerData();
+                    setDefaultDates();
+                } catch (e) {
+                    console.error("세션 복원 실패:", e);
+                    handleLogout();
+                }
+            }
+        });
 
         // ----------------------------------------------------
         // 💬 500개 명언 중 랜덤 1개 표출 함수

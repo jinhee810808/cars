@@ -4,19 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>차량관리프로그램 - 어드민</title>
+    <title>관리자 운행일지</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="img/logo_k_out.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+    <style>      
+        @font-face {
+            font-family: 'NaturalSans';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607201621@jayeonsans-medium/jayeonsans-medium/JayeonSans-Regular.woff2') format('woff2');
+            font-weight: 400 !important;
+            font-display: swap;
+        }
+
+         body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+
+        .my-greeting-font {
+            font-family: 'NaturalSans', cursive, sans-serif !important;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-white min-h-screen">
 
     <!-- 1. 로그인 스크린 컨테이너 -->
-    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4">
+    <div id="login-screen" class="min-h-screen flex flex-col items-center justify-center p-4">
         <div class="max-w-md w-full bg-slate-800/80 backdrop-blur-md p-8 rounded-2xl border border-slate-700 shadow-2xl">
             <div class="text-center mb-8">
                 <!-- KlassAuto 브랜드 로고 박스 -->
@@ -55,6 +66,20 @@
                 </button>
             </form>
             <p id="login-error" class="text-red-500 text-xs text-center mt-3 hidden">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+            
+        </div>
+        <!-- 💡 로그인 카드 하단 일시 및 대형 인사말 영역 -->
+        <div class="mt-8 text-center max-w-4xl w-full px-4 space-y-3">
+            <!-- 🌟 날짜 및 시간 폰트 확대 (모바일 16px / PC 18px) + 여백 확장 -->
+            <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-slate-800/90 border border-slate-700/80 text-indigo-300 text-base sm:text-2xl shadow-lg">
+                <i class="fa-regular fa-calendar-check text-indigo-400 text-lg sm:text-xl"></i>
+                <span id="login-today-date">날짜를 불러오는 중...</span>
+            </div>
+
+            <!-- 🌟 인사말 폰트 확대 (모바일 20px / 태블릿 24px / PC 30px) -->
+            <p id="login-daily-greeting" class="my-greeting-font text-xl sm:text-2xl md:text-3xl text-slate-100 leading-normal break-keep drop-shadow-md">
+                인사말을 불러오는 중입니다...
+            </p>
         </div>
     </div>
 
@@ -250,7 +275,7 @@
                             <h3 class="text-sm font-extrabold text-gray-800 flex items-center gap-1.5">📊 지점별 차량 사용 기록 현황판 (도착 최신순)</h3>
                             <span class="text-[11px] bg-blue-50 text-blue-600 px-2 py-0.5 border border-blue-100 rounded font-semibold">지점 격리 관리 모드</span>
                         </div>
-                        <div id="admin-branch-logs-container" class="space-y-6 max-h-[580px] overflow-y-auto pr-1"></div>
+                        <div id="admin-branch-logs-container" class="grid grid-cols-1 gap-4 h-[620px]"></div>
                     </div>
                 </div>
 
@@ -270,7 +295,7 @@
                         <span>|</span>
                         <span><b>사업자등록번호:</b> 745-06-01064</span>
                         <span>|</span>
-                        <span><b>통신판매업신고번호:</b> 제2020-의정부신곡-0073호</span>
+                        <span><b>통신판매업신고번호:</b> 제2026-서울동대문-1498호</span>
                     </div>
                     <p class="mt-3 text-gray-300 font-bold font-mono tracking-wide">ⓒ LEASEMANSOFT ALL RIGHTS RESERVED.</p>
                 </footer>
@@ -282,6 +307,100 @@
     <script>
         // 💡 [추가] 백엔드 PHP 파일들이 위치한 경로 정의
         const SERVER_URL = "./api";
+
+        // ----------------------------------------------------
+        // 🌟 [추가] 오늘 날짜 표출 함수 (한국어 형식)
+        // ----------------------------------------------------
+        function displayTodayDate() {
+            const dateEl = document.getElementById('login-today-date');
+            if (!dateEl) return;
+            
+            const now = new Date();
+            const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const date = now.getDate();
+            const dayName = days[now.getDay()];
+
+            // 2자리 수 맞춤 포맷팅 (00:00:00)
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            dateEl.innerText = `${year}년 ${month}월 ${date}일 ${dayName} ${hours}:${minutes}:${seconds}`;
+        }
+
+        // 페이지 로드 시 즉시 실행 및 1초마다 실시간 시/분/초 갱신
+        document.addEventListener("DOMContentLoaded", () => {
+            displayTodayDate();
+            setInterval(displayTodayDate, 1000); // 1초마다 자동 업데이트
+            loadRandomGreetingFromCSV();
+        });
+
+        // ----------------------------------------------------
+        // 🌟 [추가] hello.csv에서 랜덤 인사말/명언 불러오기
+        // ----------------------------------------------------
+        async function loadRandomGreetingFromCSV() {
+            const greetingEl = document.getElementById('login-daily-greeting');
+            if (!greetingEl) return;
+
+            // CSV 파일 로드 실패 시 대체할 기본 문구 리스트
+            const defaultGreetings = [
+                "오늘 하루도 힘차고 활기차게 화이팅하세요!"
+            ];
+
+            try {
+                const response = await fetch(`csv/hello.csv?t=${new Date().getTime()}`);
+                if (!response.ok) throw new Error("csv/hello.csv 로드 실패");
+
+                const text = await response.text();
+                
+                // 줄바꿈 기준으로 행 분리
+                const lines = text.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
+                const greetings = [];
+
+                // 💡 (line, idx) 형태로 인덱스 매개변수 명시
+                lines.forEach((line, idx) => {
+                    // 따옴표 안의 쉼표를 보존하면서 열 분리
+                    const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(p => 
+                        p.trim().replace(/^["']|["']$/g, '').trim()
+                    );
+
+                    // 💡 3번째 열(인덱스 2) 추출
+                    if (parts.length >= 3) {
+                        const targetText = parts[2]; // 3번째 열 값
+
+                        // 첫 줄(헤더 컬럼명: 번호, 제목, 명언 등)은 제외
+                        if (idx === 0 && (targetText.includes("명언") || targetText.includes("내용") || targetText.includes("문구") || targetText.includes("quote") || targetText.includes("greeting"))) {
+                            return;
+                        }
+
+                        if (targetText && targetText.length > 0) {
+                            greetings.push(targetText);
+                        }
+                    } else if (parts.length > 0 && parts[0]) {
+                        // 열이 3개 미만인 줄 대비 예외 처리
+                        greetings.push(parts[parts.length - 1]);
+                    }
+                });
+
+                if (greetings.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * greetings.length);
+                    greetingEl.innerText = greetings[randomIndex];
+                } else {
+                    greetingEl.innerText = defaultGreetings[Math.floor(Math.random() * defaultGreetings.length)];
+                }
+            } catch (err) {
+                console.warn("csv/hello.csv 파일을 읽는 중 오류가 발생하여 기본 문구를 표시합니다:", err);
+                greetingEl.innerText = defaultGreetings[Math.floor(Math.random() * defaultGreetings.length)];
+            }
+        }
+
+        // 페이지 로드 시 오늘 날짜 및 랜덤 인사말 실행
+        document.addEventListener("DOMContentLoaded", () => {
+            displayTodayDate();
+            loadRandomGreetingFromCSV();
+        });
         
         // ----------------------------------------------------
         // 서버 최신 데이터 동기화 긁어오기
@@ -479,6 +598,8 @@
 
         function renderAdminBranchLogsSections() {
             const container = document.getElementById('admin-branch-logs-container');
+            if (!container) return;
+
             document.getElementById('admin-summary-logs').innerText = `${MOCK_HISTORIES.length}건`;
             container.innerHTML = "";
 
@@ -491,26 +612,31 @@
             MOCK_BRANCHES.forEach(bName => {
                 const branchLogs = sortedHistories.filter(log => log.branch_name === bName);
                 const section = document.createElement('div');
-                section.className = "border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden";
+                
+                // 💡 [핵심] 상/하 2행 반반 분할을 위해 고정 높이(h-[295px]) 및 flex-col 적용
+                section.className = "border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden flex flex-col h-[295px]";
                 
                 section.innerHTML = `
-                    <div class="bg-gray-100 px-4 py-2.5 border-b flex justify-between items-center">
-                        <span class="font-extrabold text-sm text-gray-800 flex items-center gap-1">🏢 ${bName} 기록 현황</span>
-                        <span class="text-[11px] bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full font-bold">기록 ${branchLogs.length}건</span>
+                    <div class="bg-gray-100 px-4 py-2 border-b flex justify-between items-center shrink-0">
+                        <span class="font-extrabold text-sm text-gray-800 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-blue-600 inline-block"></span> 🏢 ${bName} 기록 현황
+                        </span>
+                        <span class="text-[11px] bg-white border border-gray-200 text-gray-700 px-2.5 py-0.5 rounded-full font-bold shadow-2xs">총 ${branchLogs.length}건</span>
                     </div>
-                    <div class="overflow-x-auto">
+                    <!-- 💡 내부 리스트 테이블 영역만 독립 스크롤 작동 -->
+                    <div class="flex-1 overflow-x-auto overflow-y-auto">
                         <table class="w-full text-left border-collapse text-xs">
-                            <thead class="bg-gray-50 border-b text-gray-500 font-bold">
+                            <thead class="bg-gray-50/95 sticky top-0 border-b text-gray-500 font-bold backdrop-blur-xs z-10">
                                 <tr>
                                     <th class="p-2.5 pl-4">구분</th>
                                     <th class="p-2.5">매칭 차량(유종)</th>
                                     <th class="p-2.5">등록 직원</th>
                                     <th class="p-2.5">일시 / 지출분류</th>
                                     <th class="p-2.5">거리 / 지출금액</th>
-                                    <th class="p-2.5">상세 메모</th>
+                                    <th class="p-2.5 pr-4">상세 메모</th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody-branch-log-${bName}" class="divide-y divide-gray-50 text-gray-700"></tbody>
+                            <tbody id="tbody-branch-log-${bName}" class="divide-y divide-gray-100 text-gray-700"></tbody>
                         </table>
                     </div>
                 `;
@@ -518,31 +644,42 @@
 
                 const tbody = document.getElementById(`tbody-branch-log-${bName}`);
                 if (branchLogs.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-gray-400 font-medium bg-white">현재 ${bName}에서 등록된 이용 내역이 없습니다.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-400 font-medium bg-slate-50/50">현재 ${bName}에서 등록된 이용 내역이 없습니다.</td></tr>`;
                     return;
                 }
 
                 branchLogs.forEach(log => {
-                    const tr = document.createElement('tr'); tr.className = "hover:bg-gray-50 transition-colors";
+                    const tr = document.createElement('tr'); 
+                    tr.className = "hover:bg-blue-50/40 transition-colors";
+                    
                     const currentFuel = MOCK_VEHICLES.find(v => v.vehicle_num === log.vehicle_num)?.fuel || "휘발유";
                     const currentModel = MOCK_VEHICLES.find(v => v.vehicle_num === log.vehicle_num)?.model_name || "";
                     
-                    let badgeHTML = log.type === "운행" ? `<span class="bg-blue-50 text-blue-700 border border-blue-100 font-bold px-1.5 py-0.5 rounded text-[10px]">📋 운행</span>` : `<span class="bg-orange-50 text-orange-700 border border-orange-100 font-bold px-1.5 py-0.5 rounded text-[10px]">💳 지출</span>`;
-                    let infoTimeHTML = log.type === "운행" ? `<div class="text-gray-400 text-[10px]">도착: ${log.end_datetime}</div>` : `<div class="font-bold text-orange-600 text-[11px]">${log.expense_type}(${log.expense_date})</div>`;
-                    let infoValueHTML = log.type === "운행" ? `<span class="font-semibold text-gray-700">${(log.end_km - log.start_km)} km</span>` : `<span class="font-extrabold text-blue-600">${Number(log.amount || 0).toLocaleString()} 원</span>`;
+                    const badgeHTML = log.type === "운행" 
+                        ? `<span class="bg-blue-50 text-blue-700 border border-blue-100 font-bold px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">📋 운행</span>` 
+                        : `<span class="bg-amber-50 text-amber-700 border border-amber-100 font-bold px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">💳 지출</span>`;
+                    
+                    const infoTimeHTML = log.type === "운행" 
+                        ? `<div class="text-gray-500 text-[10px] whitespace-nowrap">도착: ${log.end_datetime}</div>` 
+                        : `<div class="font-bold text-amber-600 text-[11px] whitespace-nowrap">${log.expense_type}(${log.expense_date})</div>`;
+                    
+                    const infoValueHTML = log.type === "운행" 
+                        ? `<span class="font-semibold text-gray-800 whitespace-nowrap">${(Number(log.end_km) - Number(log.start_km)).toLocaleString()} km</span>` 
+                        : `<span class="font-extrabold text-blue-600 whitespace-nowrap">${Number(log.amount || 0).toLocaleString()} 원</span>`;
 
                     tr.innerHTML = `
-                        <td class="p-2.5 pl-4">${badgeHTML}</td>
-                        <td class="p-2.5 font-mono font-bold text-gray-900">${log.vehicle_num}(${currentModel}) <span class="text-[9px] font-normal text-gray-400 bg-gray-50 px-1 border rounded">${currentFuel}</span></td>
-                        <td class="p-2.5 font-medium text-gray-600">${log.user_name}</td>
-                        <td class="p-2.5">${infoTimeHTML}</td>
-                        <td class="p-2.5">${infoValueHTML}</td>
-                        <td class="p-2.5 max-w-[150px] truncate text-gray-500 font-medium" title="${log.memo || '-'}">${log.memo || '-'}</td>
+                        <td class="p-2 pl-4">${badgeHTML}</td>
+                        <td class="p-2 font-mono font-bold text-gray-900 text-[11px] whitespace-nowrap">${log.vehicle_num} (${currentModel}) <span class="text-[9px] font-normal text-gray-400 bg-gray-50 px-1 border rounded">${currentFuel}</span></td>
+                        <td class="p-2 font-medium text-gray-700 text-[11px] whitespace-nowrap">${log.user_name}</td>
+                        <td class="p-2">${infoTimeHTML}</td>
+                        <td class="p-2">${infoValueHTML}</td>
+                        <td class="p-2 pr-4 max-w-[160px] truncate text-gray-500 text-[11px]" title="${log.memo || '-'}">${log.memo || '-'}</td>
                     `;
                     tbody.appendChild(tr);
                 });
             });
         }
+        
         function updateAdminBranchUI() {
             const listBox = document.getElementById('admin-branch-list-box');
             const carSelect = document.getElementById('new-car-branch');
