@@ -1,0 +1,1200 @@
+<!-- 푸터 리스맨소프트 -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KlassAuto | 스마트 업무차량 운행일지</title>
+    <meta name="description" content="출발과 도착만 입력하면 주행거리 계산부터 유류비·통행료 정산, 전 지점 차량 현황까지 실시간으로 정리되는 업무용 차량 관리 솔루션, KlassAuto.">
+
+    <!-- 📱 카카오톡 / SNS 공유 메타태그 (Open Graph) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="KlassAuto">
+    <meta property="og:url" content="https://klassauto.kr/">
+    <meta property="og:title" content="KlassAuto 차량관리 솔루션">
+    <meta property="og:description" content="스마트 업무용 차량 운행일지 및 지출 관리 시스템">
+    <!-- ⚠️ 실제 브라우저 주소창에 쳤을 때 열리는 절대 경로(HTTPS 권장)로 지정 -->
+    <meta property="og:image" content="https://klassauto.kr/cars/img/k-kakao-blue2.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <link rel="shortcut icon" type="image/x-icon" href="cars/img/logo_k3.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-900:#0b1b45;
+    --blue-800:#122a68;
+    --blue-700:#1d3f97;
+    --blue-600:#2952d9;
+    --blue-500:#3b66f0;
+    --blue-100:#e8eefd;
+    --blue-50:#f4f7ff;
+    --ink-900:#101423;
+    --ink-700:#3a3f52;
+    --ink-500:#6b7186;
+    --ink-300:#a5abbd;
+    --line:#e6e9f2;
+    --white:#ffffff;
+    --bg:#fbfcff;
+    --amber:#ffb648;
+    --radius-lg:24px;
+    --radius-md:16px;
+    --radius-sm:10px;
+    --shadow-sm:0 2px 10px rgba(16,20,35,0.05);
+    --shadow-md:0 12px 32px rgba(20,40,110,0.10);
+    --shadow-lg:0 24px 60px rgba(15,30,90,0.16);
+    --maxw:1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans KR","Inter",-apple-system,BlinkMacSystemFont,"Malgun Gothic",sans-serif;
+    color:var(--ink-900);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    word-break:keep-all;
+    overflow-wrap:break-word;
+  }
+  img,svg{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;margin:0;padding:0;}
+  button{font-family:inherit;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{position:relative;}
+
+  /* ---------- Reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:linear-gradient(180deg,rgba(4,15,37,0.68) 0%,rgba(4,15,37,0.36) 78%,rgba(4,15,37,0) 100%);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    border-bottom:1px solid rgba(153,194,255,0.18);
+    transition:background .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  header.is-scrolled{background:rgba(255,255,255,0.94);border-bottom-color:var(--line);box-shadow:0 6px 20px rgba(11,27,69,0.12);}
+  header.is-scrolled .brand-logo{filter:none;}
+  header.is-scrolled .nav-links a,
+  header.is-scrolled .login-links{color:var(--blue-900);text-shadow:none;}
+  header.is-scrolled .login-links a{color:var(--blue-900);text-shadow:none;}
+  header.is-scrolled .nav-links a:hover::before,
+  header.is-scrolled .nav-links a:focus-visible::before{filter:brightness(0) saturate(100%) invert(34%) sepia(96%) saturate(1892%) hue-rotate(208deg) brightness(96%) contrast(96%);}
+  header.is-scrolled .login-divider{background:var(--line);}
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    height:76px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-0.02em;color:var(--blue-800);}
+  .brand-logo{display:block;width:150px;height:auto;object-fit:contain;filter:brightness(0) invert(1);}
+  .brand .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,var(--blue-500),var(--blue-700));display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);}
+  .brand .mark svg{width:19px;height:19px;}
+  .brand span{font-family:"Inter","Noto Sans KR",sans-serif;}
+
+  .nav-links{display:flex;align-items:center;gap:35px;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;}
+  .nav-links a{position:relative;display:inline-flex;align-items:center;gap:7px;padding:9px 0;font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 5px rgba(4,14,36,0.65);transition:color .2s ease;}
+  .nav-links a::before{content:"";width:22px;height:22px;flex:none;background:url("cars/images/icon.png") center/contain no-repeat;opacity:0;transform:translateX(-7px) scale(.82);transition:opacity .2s ease,transform .2s ease;}
+  .nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--blue-500);transform:scaleX(0);transform-origin:right;transition:transform .25s ease;}
+  .nav-links a:hover,
+  .nav-links a:focus-visible{color:#cbd9ff;}
+  .nav-links a:hover::before,
+  .nav-links a:focus-visible::before{opacity:1;transform:translateX(0) scale(1);}
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after{transform:scaleX(1);transform-origin:left;}
+
+  .nav-actions{display:flex;align-items:center;gap:18px;margin-left:auto;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-weight:700;font-size:14.5px;
+    padding:11px 20px;border-radius:999px;
+    border:1px solid transparent;
+    cursor:pointer;white-space:nowrap;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--blue-600);color:#fff;box-shadow:0 8px 20px rgba(41,82,217,0.28);}
+  .btn-primary:hover{background:var(--blue-700);box-shadow:0 10px 26px rgba(41,82,217,0.36);}
+  .btn-ghost{background:transparent;color:var(--blue-700);border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--blue-300,#b9c9f7);background:var(--blue-50);}
+  .btn-light{background:#fff;color:var(--blue-700);}
+  .btn-light:hover{box-shadow:var(--shadow-md);}
+  .btn-outline-white{background:transparent;color:#fff;border-color:rgba(255,255,255,0.45);}
+  .btn-outline-white:hover{background:rgba(255,255,255,0.12);}
+  .btn-sm{padding:8px 16px;font-size:13.5px;}
+  .btn-block{width:100%;}
+
+  .login-cluster{display:flex;align-items:center;gap:10px;padding-left:18px;border-left:1px solid rgba(169,204,255,.28);}
+  .login-cluster-label{font-size:10.5px;font-weight:800;letter-spacing:.02em;color:rgba(214,228,255,.72);white-space:nowrap;}
+  .login-links{display:flex;align-items:center;gap:6px;padding:0;background:transparent;border:0;border-radius:0;box-shadow:none;}
+  .login-links a{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid rgba(157,194,255,.28);border-radius:9px;background:rgba(18,42,86,.48);color:rgba(244,248,255,.84);font-size:11px;font-weight:700;letter-spacing:-.02em;text-shadow:0 1px 4px rgba(4,14,36,.55);white-space:nowrap;transition:color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease;}
+  .login-links a svg{width:14px;height:14px;flex:none;opacity:.88;}
+  .login-links a:hover,.login-links a:focus-visible{background:rgba(53,92,165,.58);border-color:rgba(181,211,255,.42);color:#fff;transform:translateY(-1px);}
+  .login-links a.login-link-admin{background:rgba(44,91,196,.28);border-color:rgba(118,166,255,.22);color:#e4eeff;}
+  .login-links a.login-link-admin:hover,.login-links a.login-link-admin:focus-visible{background:rgba(61,111,229,.42);border-color:rgba(164,201,255,.4);}
+  header.is-scrolled .login-cluster{border-left-color:var(--line);}
+  header.is-scrolled .login-cluster-label{color:var(--blue-700);}
+  header.is-scrolled .login-links{background:transparent;border:0;box-shadow:none;}
+  header.is-scrolled .login-links a{color:var(--blue-800);text-shadow:none;}
+  header.is-scrolled .login-links a:hover,
+  header.is-scrolled .login-links a:focus-visible{background:#fff;border-color:#c6d6f3;color:var(--blue-700);}
+  header.is-scrolled .login-links a.login-link-user{background:#f4f7ff;border-color:#d7e1f5;}
+  header.is-scrolled .login-links a.login-link-admin{background:#e4edff;border-color:#c4d5f6;color:var(--blue-700);}
+
+  @media (min-width:981px){
+    .nav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;}
+    .nav-links{justify-self:center;}
+    .nav-actions{margin-left:0;}
+  }
+
+  .menu-toggle{display:none;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(30,66,135,.28);border:1px solid rgba(111,166,255,.34);border-radius:10px;cursor:pointer;padding:0;color:#78adff;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 5px 14px rgba(2,16,47,.16);transition:background .2s ease,border-color .2s ease,transform .2s ease;}
+  .menu-toggle:hover,.menu-toggle:focus-visible{background:rgba(46,91,178,.46);border-color:rgba(151,198,255,.62);transform:translateY(-1px);}
+  .menu-toggle svg{width:20px;height:20px;color:currentColor;}
+  header.is-scrolled .menu-toggle{background:var(--blue-50);border-color:#c9d8f5;color:var(--blue-700);box-shadow:0 4px 12px rgba(28,66,145,.1);}
+
+  /* ---------- Hero ---------- */
+  .hero{min-height:calc(100vh - 76px);min-height:calc(100svh - 76px);display:flex;align-items:center;padding:56px 0;overflow:visible;background:transparent;isolation:isolate;}
+  .hero-slides{position:absolute;inset:-76px 0 0;overflow:hidden;z-index:0;background:#081938;}
+  .hero-slide{position:absolute;inset:0;margin:0;opacity:0;visibility:hidden;transition:opacity .65s ease,visibility .65s ease;}
+  .hero-slide.is-active{opacity:1;visibility:visible;}
+  .hero-slide img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;}
+  .hero-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,16,45,.36) 0%,rgba(4,16,45,.24) 42%,rgba(4,16,45,.78) 100%);pointer-events:none;}
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:0;align-items:center;justify-items:center;text-align:center;}
+  .hero .wrap > div:first-child{width:100%;max-width:1180px;}
+  .hero-copy{display:flex;flex-direction:column;align-items:center;}
+  .hero-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;padding:7px 14px;border:1px solid rgba(130,188,255,.55);border-radius:999px;background:rgba(44,101,215,.24);box-shadow:0 6px 18px rgba(0,15,50,.14);color:#d7e8ff;font-size:12px;font-weight:800;letter-spacing:-.01em;}
+  .hero-kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:#74adff;box-shadow:0 0 0 4px rgba(116,173,255,.14);}
+  h1.hero-title{max-width:1020px;margin:0 0 19px;color:#fff;font-size:clamp(32px,4.2vw,54px);line-height:1.2;font-weight:500;letter-spacing:-.055em;text-wrap:balance;text-shadow:0 2px 14px rgba(0,10,32,.18);}
+  h1.hero-title em{font-style:normal;color:#64a0ff;}
+  .hero-desc{max-width:700px;margin:0 0 30px;color:rgba(239,246,255,.85);font-size:15px;line-height:1.85;text-wrap:balance;text-shadow:0 2px 12px rgba(0,10,32,.35);}
+  .hero-cta{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:38px;}
+  .hero-action{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:204px;padding:13px 20px;border:1px solid transparent;border-radius:11px;font-size:14px;font-weight:800;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;}
+  .hero-action svg{width:17px;height:17px;flex:none;}
+  .hero-action:hover{transform:translateY(-2px);}
+  .hero-action-primary{background:var(--blue-500);color:#fff;box-shadow:0 10px 24px rgba(24,86,220,.35);}
+  .hero-action-primary:hover{background:#2f61e3;box-shadow:0 14px 28px rgba(24,86,220,.43);}
+  .hero-action-secondary{border-color:rgba(255,255,255,.3);background:rgba(7,22,58,.58);color:#fff;box-shadow:0 9px 20px rgba(0,8,26,.15);backdrop-filter:blur(7px);}
+  .hero-action-secondary:hover{background:rgba(18,48,106,.8);border-color:rgba(255,255,255,.5);}
+  .hero-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;width:100%;max-width:960px;text-align:center;}
+  .hero-benefit{min-height:128px;padding:20px 18px 19px;border:1px solid rgba(180,216,255,.27);border-radius:14px;background:rgba(5,21,55,.56);box-shadow:0 13px 28px rgba(0,8,28,.18);backdrop-filter:blur(8px);}
+  .hero-benefit-icon{display:grid;place-items:center;width:35px;height:35px;margin:0 auto 11px;border-radius:10px;background:rgba(122,177,255,.16);color:#a8ceff;}
+  .hero-benefit-icon.amber{background:rgba(255,197,94,.14);color:#ffd27c;}
+  .hero-benefit-icon.green{background:rgba(105,220,182,.14);color:#8de0c5;}
+  .hero-benefit-icon svg{width:18px;height:18px;}
+  .hero-benefit h3{margin:0 0 6px;color:#fff;font-size:15px;font-weight:800;letter-spacing:-.03em;}
+  .hero-benefit p{margin:0;color:rgba(225,238,255,.7);font-size:12px;line-height:1.65;}
+  .hero .hero-visual{display:none;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--blue-100);color:var(--blue-700);
+    font-size:13.5px;font-weight:700;padding:7px 14px 7px 10px;border-radius:999px;
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--blue-600);}
+  h1.hero-title{
+    max-width:1020px;
+    font-size:clamp(30px,4vw,46px);
+    line-height:1.2;
+    font-weight:500;
+    letter-spacing:-.055em;
+    color:#fff;
+    margin:0 0 19px;
+    text-wrap:balance;
+    text-shadow:0 3px 22px rgba(0,10,32,.3);
+  }
+  h1.hero-title em{font-style:normal;color:#64a0ff;}
+  .hero-desc{
+    font-size:15px;color:rgba(239,246,255,.85);
+    max-width:700px;margin:0 0 30px;
+    line-height:1.85;
+    text-wrap:balance;
+    text-shadow:0 2px 12px rgba(0,10,32,.35);
+  }
+  .hero-cta{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin-bottom:38px;}
+  .hero-chips{display:flex;flex-wrap:wrap;gap:10px;}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:13px;font-weight:600;color:var(--ink-700);
+    background:#fff;border:1px solid var(--line);
+    padding:9px 14px;border-radius:999px;box-shadow:var(--shadow-sm);
+  }
+  .chip svg{width:15px;height:15px;color:var(--blue-600);flex:none;}
+
+  /* Hero visual: composed mock dashboard */
+  .hero-visual{position:relative;height:420px;}
+  .float-card{position:absolute;background:#fff;border-radius:var(--radius-md);box-shadow:var(--shadow-lg);border:1px solid var(--line);}
+  .hv-main{
+    left:6%;top:6%;width:88%;padding:22px;
+  }
+  .hv-route{display:flex;align-items:stretch;gap:14px;}
+  .hv-route .line-wrap{display:flex;flex-direction:column;align-items:center;padding-top:6px;}
+  .hv-dot{width:11px;height:11px;border-radius:50%;background:var(--blue-600);}
+  .hv-dot.end{background:var(--amber);}
+  .hv-line{flex:1;width:2px;background:repeating-linear-gradient(to bottom,var(--line) 0 5px,transparent 5px 10px);margin:4px 0;}
+  .hv-stop{flex:1;}
+  .hv-stop .k{font-size:11.5px;color:var(--ink-500);font-weight:600;margin-bottom:3px;}
+  .hv-stop .v{font-size:14px;font-weight:700;color:var(--ink-900);}
+  .hv-stop .v small{color:var(--ink-500);font-weight:500;font-size:12px;}
+  .hv-divider{height:1px;background:var(--line);margin:16px 0;}
+  .hv-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;}
+  .hv-badge{background:var(--blue-50);color:var(--blue-700);font-weight:700;font-size:12px;padding:4px 10px;border-radius:999px;}
+  .hv-total{font-weight:800;color:var(--blue-700);}
+
+  .hv-expense{left:0;bottom:2%;width:270px;padding:16px 18px;}
+  .hv-expense .row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .hv-expense .row:last-child{margin-bottom:0;}
+  .hv-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .hv-icon.fuel{background:#fff1e0;color:#e08a2c;}
+  .hv-icon.toll{background:#e7f6ee;color:#1f9d5c;}
+  .hv-icon.wash{background:var(--blue-100);color:var(--blue-700);}
+  .hv-expense .t{font-size:12.5px;font-weight:700;color:var(--ink-900);}
+  .hv-expense .s{font-size:11.5px;color:var(--ink-500);}
+  .hv-expense .amt{margin-left:auto;font-size:13px;font-weight:800;color:var(--ink-900);}
+
+  .hv-stat{right:2%;top:4%;width:190px;padding:16px 18px;text-align:left;}
+  .hv-stat .label{font-size:11.5px;color:var(--ink-500);font-weight:600;margin-bottom:8px;}
+  .hv-stat .grid3{display:flex;justify-content:space-between;gap:6px;}
+  .hv-stat .cell b{display:block;font-size:19px;font-weight:800;color:var(--blue-700);}
+  .hv-stat .cell span{font-size:10.5px;color:var(--ink-500);}
+
+  .blob{position:absolute;border-radius:50%;filter:blur(0px);z-index:-1;}
+
+  /* ---------- Section heading ---------- */
+  .sec-head{max-width:620px;margin:0 auto 52px;text-align:center;}
+  .sec-tag{display:inline-block;font-size:13px;font-weight:700;color:var(--blue-600);letter-spacing:.02em;margin-bottom:12px;}
+  .sec-title{font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:-0.02em;margin:0 0 14px;color:var(--ink-900);text-wrap:balance;}
+  .sec-desc{font-size:15.5px;color:var(--ink-500);margin:0;text-wrap:balance;}
+
+  /* ---------- Features ---------- */
+  .features{padding:120px 0 112px;background:#f5f7fb;}
+  .features .sec-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.8fr);gap:72px;align-items:end;max-width:var(--maxw);margin:0 auto 56px;text-align:left;}
+  .features .sec-tag{display:flex;align-items:center;gap:11px;margin-bottom:16px;color:var(--blue-600);font-size:12px;font-weight:800;letter-spacing:.1em;}
+  .features .sec-tag::before{content:"";width:28px;height:1px;background:var(--blue-500);}
+  .features .sec-title{max-width:660px;margin-bottom:0;line-height:1.28;}
+  .features .sec-desc{max-width:380px;margin:0 0 4px;line-height:1.8;text-align:left;}
+  .feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px;}
+  .feature-card{
+    background:#fff;border:1px solid #dfe5ef;border-radius:16px;
+    overflow:hidden;box-shadow:0 8px 24px rgba(20,40,110,0.055);
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .feature-card:hover{transform:translateY(-5px);box-shadow:0 18px 36px rgba(20,40,110,0.12);border-color:#cbd7ed;}
+  .feature-media{position:relative;aspect-ratio:1.5;overflow:hidden;background:var(--blue-50);}
+  .feature-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,27,69,0) 56%,rgba(11,27,69,0.18) 100%);pointer-events:none;}
+  .feature-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02);transition:transform .45s ease;}
+  .feature-card:hover .feature-media img{transform:scale(1.035);}
+  .feature-badge{display:none;}
+  .feature-card-body{padding:25px 26px 29px;}
+  .feature-meta{display:flex;align-items:center;gap:9px;margin-bottom:11px;color:var(--blue-600);font-size:11px;font-weight:800;letter-spacing:.08em;}
+  .feature-meta::before{content:"";width:22px;height:1px;background:var(--blue-500);}
+  .feature-card h3{font-size:19px;font-weight:800;margin:0 0 10px;letter-spacing:-0.02em;}
+  .feature-card p{font-size:14px;line-height:1.8;color:var(--ink-500);margin:0;}
+
+  /* ---------- Dual system ---------- */
+  .dual{padding:112px 0 124px;background:#fff;color:var(--ink-900);}
+  .dual-head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.8fr);gap:72px;align-items:end;max-width:var(--maxw);margin:0 auto 52px;text-align:left;}
+  .dual-head .sec-tag{color:var(--blue-600);}
+  .dual-head .sec-title{color:var(--ink-900);max-width:620px;margin-bottom:0;}
+  .dual-head .sec-desc{max-width:380px;margin:0 0 4px;color:var(--ink-500);text-align:left;}
+  .dual-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;align-items:stretch;}
+  .dual-card{
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(170px,.9fr);
+    column-gap:26px;
+    align-items:center;
+    background:#fff;
+    border:1px solid #dfe5ef;
+    border-radius:20px;
+    padding:30px;
+    overflow:hidden;
+    box-shadow:0 12px 30px rgba(20,40,110,0.065);
+  }
+  .dual-card:first-child{--card-accent:#4774df;}
+  .dual-card:last-child{--card-accent:#d7952f;}
+  .dual-card:nth-child(2){margin-top:0;}
+  .dual-card .tag-row{grid-column:1 / -1;display:flex;align-items:center;gap:11px;margin-bottom:22px;}
+  .dual-card .tag-icon{width:36px;height:36px;border-radius:8px;background:var(--blue-50);border:1px solid #dfe7fb;display:flex;align-items:center;justify-content:center;}
+  .dual-card .tag-icon svg{width:18px;height:18px;color:var(--card-accent);}
+  .dual-card .tag-icon.amber{background:#fff5e5;border-color:#f4dfb9;}
+  .dual-card .tag-icon.amber svg{color:var(--card-accent);}
+  .dual-card h3{font-size:20px;font-weight:800;color:var(--ink-900);margin:0 0 12px;letter-spacing:-0.02em;}
+  .dual-card ul{grid-column:1;grid-row:2;margin:0;}
+  .dual-card li{
+    display:flex;gap:10px;align-items:flex-start;
+    font-size:14px;color:var(--ink-700);margin-bottom:12px;
+  }
+  .dual-card li svg{width:16px;height:16px;color:var(--blue-600);flex:none;margin-top:2px;}
+
+  /* phone mockup */
+  .device-frame{grid-column:2;grid-row:2;margin:0 auto;display:flex;justify-content:center;width:100%;}
+  .phone{
+    width:190px;border-radius:21px;background:#0d1530;
+    border:5px solid #0d1530;box-shadow:0 18px 34px rgba(0,0,0,0.28);
+    overflow:hidden;
+  }
+  .phone .screen{background:#fff;border-radius:15px;padding:16px 14px 20px;color:var(--ink-900);}
+  .phone .app-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .phone .app-bar .u{font-size:11px;font-weight:700;color:var(--ink-900);}
+  .phone .app-bar .b{font-size:9px;color:var(--ink-500);background:var(--blue-50);padding:3px 7px;border-radius:999px;}
+  .phone .card-mini{background:var(--blue-50);border-radius:8px;padding:12px;margin-bottom:10px;}
+  .phone .card-mini .lab{font-size:9.5px;color:var(--blue-700);font-weight:700;margin-bottom:4px;}
+  .phone .card-mini .val{font-size:12px;font-weight:800;color:var(--ink-900);}
+  .phone .card-mini .sub{font-size:9.5px;color:var(--ink-500);margin-top:2px;}
+  .phone .btn-fake{background:var(--blue-600);color:#fff;text-align:center;font-size:11px;font-weight:700;padding:10px;border-radius:7px;margin-top:8px;}
+
+  /* browser mockup */
+  .browser{
+    grid-column:2;grid-row:2;width:100%;
+    background:#fff;border-radius:10px 10px 0 0;overflow:hidden;
+    box-shadow:0 18px 34px rgba(0,0,0,0.24);
+  }
+  .browser .bar{background:#eef1f8;padding:9px 12px;display:flex;gap:6px;}
+  .browser .bar span{width:8px;height:8px;border-radius:50%;background:#d3d8e6;}
+  .browser .body{padding:18px 18px 0;color:var(--ink-900);}
+  .bstat-row{display:flex;gap:10px;margin-bottom:14px;}
+  .bstat{flex:1;background:var(--blue-50);border-radius:8px;padding:10px 8px;text-align:center;}
+  .bstat b{display:block;font-size:16px;font-weight:800;color:var(--blue-700);}
+  .bstat span{font-size:9.5px;color:var(--ink-500);}
+  .btable{border:1px solid var(--line);border-radius:8px 8px 0 0;overflow:hidden;font-size:10.5px;}
+  .btable .thead,.btable .trow{display:grid;grid-template-columns:1fr 1fr 1fr 0.8fr;padding:8px 10px;}
+  .btable .thead{background:#f6f8fc;color:var(--ink-500);font-weight:700;}
+  .btable .trow{border-top:1px solid var(--line);color:var(--ink-700);}
+  .btable .ok{color:#1f9d5c;font-weight:700;}
+
+  /* ---------- Steps ---------- */
+  .steps{padding:112px 0 118px;background:#f5f7fb;}
+  .step-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;position:relative;}
+  .step{position:relative;padding:0;text-align:left;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:visible;box-shadow:0 8px 24px rgba(20,40,110,0.06);transition:transform .25s ease,box-shadow .25s ease;}
+  .step:hover{transform:translateY(-6px);box-shadow:0 18px 38px rgba(20,40,110,0.13);}
+  .step:not(:last-child)::after{content:"";position:absolute;top:166px;right:-24px;width:24px;border-top:1px dashed #9eb4e7;z-index:2;}
+  .step-media{position:relative;aspect-ratio:1.58;overflow:hidden;border-radius:18px 18px 0 0;background:var(--blue-50);}
+  .step-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,25,62,0.02) 48%,rgba(8,25,62,0.48) 100%);pointer-events:none;}
+  .step-media img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease;}
+  .step:hover .step-media img{transform:scale(1.045);}
+  .step-num{position:absolute;left:18px;bottom:16px;z-index:1;display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:11px;background:#fff;color:var(--blue-700);font-family:"Inter";font-weight:800;font-size:16px;box-shadow:0 8px 18px rgba(8,25,62,0.18);}
+  .step-body{padding:22px 24px 26px;}
+  .step-label{display:block;margin-bottom:9px;color:var(--blue-600);font-family:"Inter","Noto Sans KR",sans-serif;font-size:11px;font-weight:800;letter-spacing:.12em;}
+  .step h3{font-size:19px;font-weight:800;margin:0 0 9px;letter-spacing:-0.02em;}
+  .step p{font-size:14px;line-height:1.75;color:var(--ink-500);margin:0;}
+  .step-connector{display:none;}
+
+  /* ---------- Who / audience ---------- */
+  .audience{position:relative;min-height:640px;padding:112px 0 124px;background:var(--blue-900);overflow:hidden;isolation:isolate;}
+  .audience::before{content:"";position:absolute;inset:-12% -6%;background:url("cars/images/about.jpg") center center / cover no-repeat;transform:translate3d(0,var(--audience-shift,0px),0) scale(1.08);will-change:transform;z-index:-2;}
+  .audience::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,22,57,0.62) 0%,rgba(12,35,83,0.48) 100%);z-index:-1;}
+  .audience > .wrap{position:relative;z-index:1;}
+  .audience .sec-tag{color:#a8bdff;}
+  .audience .sec-title{color:#fff;}
+  .audience .sec-desc{color:rgba(255,255,255,0.82);}
+  .audience-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .audience-card{
+    border:1px solid rgba(255,255,255,0.52);border-radius:14px;
+    padding:26px 22px;background:rgba(255,255,255,0.91);text-align:left;box-shadow:0 14px 30px rgba(7,22,57,0.16);
+  }
+  .audience-card .ic{width:40px;height:40px;border-radius:9px;background:var(--blue-100);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+  .audience-card .ic svg{width:20px;height:20px;color:var(--blue-600);}
+  .audience-card h4{font-size:15px;font-weight:700;margin:0 0 6px;}
+  .audience-card p{font-size:12.5px;color:var(--ink-500);margin:0;}
+
+  /* ---------- CTA ---------- */
+  .cta{
+    width:100%;margin:0;border-radius:0;
+    background:linear-gradient(130deg,#071735 0%,#0d2354 58%,#153b8b 100%);
+    min-height:360px;padding:78px max(24px,calc((100% - var(--maxw)) / 2));text-align:left;color:#fff;position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);align-items:center;gap:64px;overflow:hidden;isolation:isolate;
+  }
+  .cta::before{content:"";position:absolute;width:520px;height:520px;right:-210px;top:-250px;border:1px solid rgba(143,176,255,0.22);border-radius:50%;box-shadow:0 0 0 34px rgba(143,176,255,0.04),0 0 0 68px rgba(143,176,255,0.025);z-index:-1;}
+  .cta::after{content:"";position:absolute;left:50%;top:18%;bottom:18%;width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,0.18),transparent);z-index:-1;}
+  .cta-copy{max-width:620px;}
+  .cta-kicker{display:inline-flex;align-items:center;gap:10px;margin-bottom:18px;color:#9eb9ff;font-family:"Inter","Noto Sans KR",sans-serif;font-size:11px;font-weight:800;letter-spacing:.16em;}
+  .cta-kicker::before{content:"";width:28px;height:1px;background:#8fb0ff;}
+  .cta h2{font-size:clamp(28px,3.4vw,42px);font-weight:800;line-height:1.25;margin:0 0 16px;letter-spacing:-0.035em;text-wrap:balance;}
+  .cta p{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.66);max-width:560px;margin:0;text-wrap:balance;}
+  .cta-actions{padding-left:42px;}
+  .cta-actions::before{content:"KLASSAUTO\A SMART FLEET WORKSPACE";white-space:pre;display:block;margin-bottom:20px;color:rgba(255,255,255,0.46);font-family:"Inter","Noto Sans KR",sans-serif;font-size:10px;font-weight:700;line-height:1.8;letter-spacing:.12em;}
+  .cta-btns{display:flex;gap:12px;justify-content:flex-start;flex-wrap:wrap;}
+  .cta .btn-light{background:#fff;color:var(--blue-800);box-shadow:0 12px 24px rgba(0,0,0,0.18);}
+  .cta .btn-light:hover{background:#edf2ff;}
+  .cta .btn-outline-white{color:#fff;border-color:rgba(255,255,255,0.38);}
+  .cta .btn-outline-white:hover{background:rgba(255,255,255,0.12);}
+
+  /* ---------- Footer ---------- */
+  footer{border-top:1px solid rgba(255,255,255,0.06);padding:26px 0 22px;background:#0e172d;color:#9eb2d5;}
+  footer > .wrap{display:none;}
+  .footer-info{max-width:1180px;margin:0 auto;padding:0 24px;text-align:center;}
+  .footer-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;line-height:1.8;}
+  .footer-row + .footer-row{margin-top:10px;}
+  .footer-item{font-size:12px;font-weight:600;color:#9eb2d5;white-space:nowrap;}
+  .footer-sep{margin:0 13px;color:#617497;font-size:12px;}
+  .footer-copy{margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);font-family:"Inter","Noto Sans KR",sans-serif;font-size:11px;letter-spacing:.12em;color:#7d91b4;}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:980px){
+    .nav-links{display:none;}
+    .login-cluster{display:flex;gap:0;padding-left:0;border-left:0;}
+    .login-cluster-label{display:none;}
+    .login-links{display:flex;gap:4px;}
+    .login-links a{padding:6px 8px;font-size:10px;}
+    .login-links a svg{width:13px;height:13px;}
+    .nav-actions{gap:8px;}
+    .menu-toggle{display:inline-flex;}
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-copy{padding:0 10px;}
+    h1.hero-title{font-size:clamp(31px,5.2vw,46px);}
+    .hero-benefits{max-width:760px;}
+    .hero-visual{height:340px;margin-top:20px;}
+    .feature-grid{grid-template-columns:1fr 1fr;}
+    .features .sec-head{display:block;max-width:620px;text-align:center;}
+    .features .sec-title{margin-bottom:14px;}
+    .features .sec-desc{max-width:none;margin:0 auto;text-align:center;}
+    .features .sec-tag{justify-content:center;}
+    .dual-grid{grid-template-columns:1fr;}
+    .dual-head{display:block;max-width:620px;text-align:center;}
+    .dual-head .sec-title{margin-bottom:14px;}
+    .dual-head .sec-desc{max-width:none;margin:0 auto;text-align:center;}
+    .dual-card:nth-child(2){margin-top:0;}
+    .step-row{grid-template-columns:1fr;gap:36px;}
+    .step-connector{display:none;}
+    .step:not(:last-child)::after{display:none;}
+    .audience-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:600px){
+    .wrap{padding:0 18px;}
+    .hero{padding:46px 0 58px;}
+    .hero-copy{padding:0;}
+    .hero-kicker{margin-bottom:16px;font-size:10.5px;padding:7px 11px;}
+    h1.hero-title{font-size:clamp(27px,7.5vw,36px);line-height:1.23;margin-bottom:16px;}
+    .hero-desc{font-size:13px;line-height:1.8;margin-bottom:24px;}
+    .hero-cta{width:100%;gap:9px;margin-bottom:28px;}
+    .hero-action{width:100%;min-width:0;padding:12px 14px;font-size:13px;}
+    .hero-benefits{grid-template-columns:1fr;gap:10px;}
+    .hero-benefit{min-height:0;padding:16px 17px;text-align:left;display:grid;grid-template-columns:34px 1fr;column-gap:11px;align-items:center;}
+    .hero-benefit-icon{grid-row:1 / span 2;margin:0;}
+    .hero-benefit h3{margin:0 0 2px;font-size:14px;}
+    .hero-benefit p{font-size:11px;line-height:1.55;}
+    .feature-grid{grid-template-columns:1fr;}
+    .audience-grid{grid-template-columns:1fr;}
+    .cta{margin:0;padding:64px 22px;grid-template-columns:1fr;gap:32px;text-align:center;}
+    .cta::after{display:none;}
+    .cta-copy{max-width:620px;margin:0 auto;}
+    .cta-actions{padding-left:0;}
+    .cta-actions::before{display:none;}
+    .cta p{margin:0 auto;}
+    .cta-btns{justify-content:center;}
+    .footer-info{padding:0 18px;}
+    .footer-row{display:block;}
+    .footer-item{white-space:normal;}
+    .footer-sep{display:inline-block;margin:0 8px;}
+    .hv-stat{display:none;}
+    .hv-expense{width:230px;}
+    .foot-cols{gap:36px;}
+    .features,.steps{padding:64px 0;}
+    .dual{padding:64px 0;}
+    .dual-card{grid-template-columns:1fr;row-gap:0;}
+    .dual-card .tag-row,.dual-card ul,.dual-card .device-frame,.dual-card > .browser{grid-column:1;grid-row:auto;}
+    .dual-card .device-frame,.dual-card > .browser{margin-top:22px;}
+    .audience{min-height:0;padding:72px 0 80px;}
+  }
+  @media (min-width:360px) and (max-width:600px){
+    .brand-logo{width:136px;}
+    .nav-actions{gap:6px;}
+    .login-links{gap:3px;}
+    .login-links a{gap:3px;padding:5px 5px;font-size:9px;letter-spacing:-.07em;}
+    .login-links a svg{width:11px;height:11px;}
+    .menu-toggle{width:32px;height:32px;border-radius:9px;}
+    .menu-toggle svg{width:18px;height:18px;}
+    .hero-cta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+    .hero-action{width:100%;min-width:0;padding:11px 5px;font-size:11px;letter-spacing:-.06em;white-space:nowrap;gap:5px;}
+    .hero-action svg{width:15px;height:15px;}
+  }
+
+  /* mobile nav drawer */
+  .mnav{
+    position:fixed;inset:0;background:rgba(10,14,30,0.5);
+    display:none;z-index:200;
+  }
+  .mnav.open{display:block;}
+  .mnav-panel{
+    position:absolute;top:0;right:0;height:100%;width:78%;max-width:320px;
+    background:#fff;padding:26px 26px;box-shadow:-10px 0 40px rgba(0,0,0,0.2);
+    display:flex;flex-direction:column;gap:6px;
+  }
+  .mnav-panel a{padding:13px 4px;font-size:16px;font-weight:600;color:var(--ink-900);border-bottom:1px solid var(--line);}
+  .mnav-close{align-self:flex-end;background:none;border:none;padding:8px;margin-bottom:6px;cursor:pointer;}
+  .mnav-close svg{width:22px;height:22px;}
+  .mnav-login-group{margin-top:9px;padding-top:17px;border-top:1px solid #e8edf6;}
+  .mnav-login-label{display:block;margin-bottom:10px;color:var(--ink-500);font-size:11px;font-weight:800;letter-spacing:.08em;}
+  .mnav-login-options{display:grid;gap:9px;}
+  .mnav-login{display:grid;grid-template-columns:34px minmax(0,1fr) 16px;align-items:center;column-gap:10px;padding:12px 12px!important;border:1px solid #dbe4f4!important;border-radius:14px;background:linear-gradient(135deg,#f8faff 0%,#eef4ff 100%);color:var(--blue-900)!important;box-shadow:0 6px 14px rgba(28,66,145,.06);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease!important;}
+  .mnav-login:hover,.mnav-login:focus-visible{transform:translateY(-1px);border-color:#abc4ed!important;box-shadow:0 9px 18px rgba(28,66,145,.12);}
+  .mnav-login-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:#e2ecff;color:var(--blue-600);}
+  .mnav-login-icon svg{width:18px;height:18px;}
+  .mnav-login-copy{display:flex;flex-direction:column;gap:1px;min-width:0;}
+  .mnav-login-copy strong{font-size:14px;font-weight:800;line-height:1.4;}
+  .mnav-login-copy small{color:var(--ink-500);font-size:10.5px;font-weight:600;line-height:1.4;}
+  .mnav-login-arrow{color:#8da5cc;font-size:18px;font-weight:500;line-height:1;}
+  .mnav-login-admin{border-color:#b9cdf3!important;background:linear-gradient(135deg,#edf4ff 0%,#dce9ff 100%);}
+  .mnav-login-admin .mnav-login-icon{background:#cbdcff;color:#2459df;}
+  .mnav-login-admin .mnav-login-arrow{color:#416ed0;}
+  .mnav-cta{margin-top:18px;display:flex;flex-direction:column;gap:10px;}
+
+  /* ---------- Kakao Floating Button ---------- */
+.kakao-float {
+  position: fixed;
+  right: 24px;
+  bottom: 28px;
+  z-index: 999;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background-color: #FEE500;
+  color: #191919;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 999px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.kakao-float:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22), 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+
+.kakao-float svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* 모바일 화면 대응 (아이콘 중심 또는 여백 축소) */
+@media (max-width: 600px) {
+  .kakao-float {
+    right: 18px;
+    bottom: 20px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}
+
+/* ---------- About Section Responsive ---------- */
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 32px;
+  align-items: stretch;
+}
+
+@media (max-width: 980px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .about {
+    padding: 64px 0 !important;
+  }
+  .about-card-left {
+    padding: 26px 20px !important;
+  }
+  .about-card-right {
+    padding: 24px 18px !important;
+  }
+  .about-stat-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+  .about-stat-sep {
+    display: none !important;
+  }
+  .about-dl {
+    grid-template-columns: 74px minmax(0, 1fr) !important;
+    font-size: 12.5px !important;
+    row-gap: 10px !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="brand">
+      <img class="brand-logo" src="cars/images/logo.png" alt="KlassAuto">
+    </a>
+
+    <nav class="nav-links">
+      <a href="#features">주요 기능</a>
+      <a href="#user-view">화면 안내</a>
+      <a href="#contact">도입 문의</a>
+      <a href="#about">회사소개</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="login-cluster" aria-label="시스템 접속">
+        <span class="login-cluster-label">접속 센터</span>
+        <div class="login-links">          
+          <a class="login-link-admin" href="cars/admin.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 19 6v5.4c0 4.3-2.8 7.7-7 9.1-4.2-1.4-7-4.8-7-9.1V6l7-2.5Z"/><path d="m9.2 12 1.8 1.8 3.8-4"/></svg>
+            <span>본사 관제 로그인</span>
+          </a>
+          <a class="login-link-user" href="cars/user.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c.8-3.1 3-4.7 6.5-4.7s5.7 1.6 6.5 4.7"/></svg>
+            <span>이용자 로그인</span>
+          </a>
+        </div>
+      </div>
+      <button class="menu-toggle" id="menuOpen" aria-label="메뉴 열기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mnav" id="mnav">
+  <div class="mnav-panel">
+    <button class="mnav-close" id="menuClose" aria-label="닫기">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#101423" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <a href="#features">주요 기능</a>
+    <a href="#user-view">이용자 시스템</a>
+    <a href="#admin-view">본부 통합관리</a>
+    <a href="#contact">도입 문의</a>
+    <div class="mnav-login-group" aria-label="시스템 접속">
+      <span class="mnav-login-label">SYSTEM ACCESS</span>
+      <div class="mnav-login-options">
+        <a class="mnav-login mnav-login-user" href="user.html">
+          <span class="mnav-login-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c.8-3.1 3-4.7 6.5-4.7s5.7 1.6 6.5 4.7"/></svg></span>
+          <span class="mnav-login-copy"><strong>직원 로그인</strong><small>운행일지 등록 시스템</small></span>
+          <span class="mnav-login-arrow" aria-hidden="true">›</span>
+        </a>
+        <a class="mnav-login mnav-login-admin" href="admin.html">
+          <span class="mnav-login-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 19 6v5.4c0 4.3-2.8 7.7-7 9.1-4.2-1.4-7-4.8-7-9.1V6l7-2.5Z"/><path d="m9.2 12 1.8 1.8 3.8-4"/></svg></span>
+          <span class="mnav-login-copy"><strong>본사 관제 로그인</strong><small>통합 관리 대시보드</small></span>
+          <span class="mnav-login-arrow" aria-hidden="true">›</span>
+        </a>
+      </div>
+    </div>
+    <div class="mnav-cta">
+      <a class="btn btn-primary btn-block" href="https://forms.gle/3faKBDLgqb5SQYDZA">도입 문의하기</a>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-slides" aria-label="KlassAuto 메인 슬라이드">
+      <figure class="hero-slide is-active">
+        <img src="cars/images/main_slide01.jpg" alt="야간 업무 차량과 디지털 네트워크가 펼쳐진 KlassAuto 메인 이미지">
+      </figure>
+      <figure class="hero-slide">
+        <img src="cars/images/main_slide02.jpg" alt="도심 속 업무 차량과 디지털 관제 네트워크가 펼쳐진 KlassAuto 메인 이미지">
+      </figure>
+    </div>
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="hero-kicker">업무용 차량 운행일지 &amp; 경비 관리 플랫폼</span>
+        <h1 class="hero-title">수기 작성은 그만,<br><em>스마트 터치 한 번</em>으로 끝내는 차량 관리</h1>
+        <p class="hero-desc">출발·도착 계기판 주행거리 입력부터 주유·정비 경비 정산, 전 지점 배정 차량 관제까지 실시간 클라우드로 완벽하게 동기화됩니다.</p>
+        <div class="hero-cta">
+          <a class="hero-action hero-action-primary" href="cars/user2.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 1.7-6.2A2.5 2.5 0 0 1 7.1 8h9.8a2.5 2.5 0 0 1 2.4 1.8L21 16"/><path d="M3 16h18v3.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19.5V16Z"/><circle cx="7" cy="17.5" r=".7" fill="currentColor"/><circle cx="17" cy="17.5" r=".7" fill="currentColor"/></svg>운행일지 등록 체험하기</a>
+          <a class="hero-action hero-action-secondary" href="cars/admin2.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16"/><path d="m7 15 3-4 3 2 5-6"/><path d="M16 7h2v2"/></svg>본사 통합 대시보드 체험하기</a>
+        </div>
+        <div class="hero-benefits">
+          <article class="hero-benefit"><span class="hero-benefit-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 1.5M9 3h6M12 3v2"/></svg></span><h3>3초 간편 운행 등록</h3><p>출발·도착 시간과 누적 km만 입력하면 운행거리와 경로가 자동 산출됩니다.</p></article>
+          <article class="hero-benefit"><span class="hero-benefit-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/></svg></span><h3>투명한 차량 지출 정산</h3><p>주유비, 하이패스 통행료, 정비·세차비 영수증을 즉시 전산에 누적 관리합니다.</p></article>
+          <article class="hero-benefit"><span class="hero-benefit-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h.01M12 8h.01M16 8h.01M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg></span><h3>지점별 완벽 격리 관제</h3><p>전사 지점 개설, 소속 차량 배정, 사원 권한 발급을 관리자 화면에서 제어합니다.</p></article>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal">
+        <div class="float-card hv-main">
+          <div class="hv-route">
+            <div class="line-wrap">
+              <div class="hv-dot"></div>
+              <div class="hv-line"></div>
+              <div class="hv-dot end"></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:space-between;">
+              <div class="hv-stop">
+                <div class="k">🛫 출발 · 2026.07.06 09:00</div>
+                <div class="v">12,450 <small>km</small></div>
+              </div>
+              <div class="hv-stop" style="margin-top:20px;">
+                <div class="k">🛬 도착 · 2026.07.06 11:30</div>
+                <div class="v">12,510 <small>km</small></div>
+              </div>
+            </div>
+          </div>
+          <div class="hv-divider"></div>
+          <div class="hv-row">
+            <span class="hv-badge">자동 계산</span>
+            <span class="hv-total">주행거리 60km</span>
+          </div>
+        </div>
+
+        <div class="float-card hv-expense">
+          <div class="row">
+            <div class="hv-icon fuel">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h12M6 22V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v16M6 12h8M16 8l3 3v6a1.5 1.5 0 0 0 3 0v-4l-2-4"/></svg>
+            </div>
+            <div>
+              <div class="t">강남 GS칼텍스</div>
+              <div class="s">가득 주유</div>
+            </div>
+            <div class="amt">55,000원</div>
+          </div>
+          <div class="row">
+            <div class="hv-icon toll">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M7 11h.01M12 11h.01"/></svg>
+            </div>
+            <div>
+              <div class="t">하이패스 통행료</div>
+              <div class="s">경부선</div>
+            </div>
+            <div class="amt">4,500원</div>
+          </div>
+        </div>
+
+        <div class="float-card hv-stat">
+          <div class="label">본사 통합 현황 · 예시</div>
+          <div class="grid3">
+            <div class="cell"><b>3</b><span>인가 지점</span></div>
+            <div class="cell"><b>12</b><span>등록 차량</span></div>
+            <div class="cell"><b>1,420</b><span>전체 기록</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="features-head-main">
+          <span class="sec-tag">주요 기능</span>
+          <h2 class="sec-title">현장부터 본사까지, 흐름이 끊기지 않습니다</h2>
+        </div>
+        <p class="sec-desc">복잡한 서류 대신 몇 번의 터치로 운행과 지출, 지점 현황을 한 번에 관리합니다.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card reveal">
+          <div class="feature-media">
+            <img src="cars/images/a01.jpg" alt="차량 운행 등록과 경로 관리 이미지">
+            <div class="feature-badge"><span class="num">01</span><span>운행 등록</span></div>
+          </div>
+          <div class="feature-card-body">
+            <div class="feature-meta">01 / 운행 등록</div>
+            <h3>3초면 끝나는 운행 등록</h3>
+            <p>출발·도착 시간과 계기판 거리만 입력하면 주행 거리와 경로가 자동으로 계산됩니다.</p>
+          </div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-media">
+            <img src="cars/images/a02.jpg" alt="차량 유류비와 정비 비용 관리 이미지">
+            <div class="feature-badge"><span class="num">02</span><span>차량 지출</span></div>
+          </div>
+          <div class="feature-card-body">
+            <div class="feature-meta">02 / 차량 지출</div>
+            <h3>투명하게 정리되는 차량 지출</h3>
+            <p>유류비, 하이패스 통행료, 정비·세차 비용을 항목별로 기록해 한눈에 확인할 수 있습니다.</p>
+          </div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-media">
+            <img src="cars/images/a03.jpg" alt="본사 지점별 차량 통합 관제 이미지">
+            <div class="feature-badge"><span class="num">03</span><span>통합 관제</span></div>
+          </div>
+          <div class="feature-card-body">
+            <div class="feature-meta">03 / 통합 관제</div>
+            <h3>지점별로 나뉘는 통합 관제</h3>
+            <p>지점과 차량을 등록하고 직원 권한을 지정하면 본사에서 전체 현황을 한 번에 관리합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DUAL SYSTEM -->
+  <section class="dual">
+    <div class="wrap">
+      <div class="dual-head reveal">
+        <div class="dual-head-main">
+          <span class="sec-tag">2단 분리 시스템</span>
+          <h2 class="sec-title">현장 직원과 본사 관리자, 각자에게 맞는 화면</h2>
+        </div>
+        <p class="sec-desc">같은 데이터를 서로 다른 시점에서 보기 때문에 혼선 없이 협업할 수 있습니다.</p>
+      </div>
+
+      <div class="dual-grid">
+        <!-- Mobile -->
+        <div class="dual-card reveal" id="user-view">
+          <div class="tag-row">
+            <span class="tag-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></span>
+            <h3 style="margin:0;">현장 직원용 모바일</h3>
+          </div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>소속 지점 차량이 자동으로 매칭됩니다</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>운행과 지출 입력 탭이 분리돼 헷갈리지 않습니다</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>등록한 내역은 원클릭으로 수정·삭제할 수 있습니다</li>
+          </ul>
+          <div class="device-frame">
+            <div class="phone">
+              <div class="screen">
+                <div class="app-bar">
+                  <span class="u">유재석님, 반갑습니다</span>
+                  <span class="b">본점</span>
+                </div>
+                <div class="card-mini">
+                  <div class="lab">123가 4567 · 팰리세이드</div>
+                  <div class="val">출발 09:00 · 12,450km</div>
+                  <div class="sub">경유 · 로컬 모드</div>
+                </div>
+                <div class="card-mini">
+                  <div class="lab">지출 등록</div>
+                  <div class="val">주유비 55,000원</div>
+                  <div class="sub">강남 GS칼텍스</div>
+                </div>
+                <div class="btn-fake">운행 기록 등록하기</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin -->
+        <div class="dual-card reveal" id="admin-view">
+          <div class="tag-row">
+            <span class="tag-icon amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+            <h3 style="margin:0;">본사용 통합 관리 콘솔</h3>
+          </div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>전사 지점·차량·직원 권한을 한 화면에서 설정합니다</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>도착 최신순으로 자동 정렬된 전체 기록을 확인합니다</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>인가 지점, 등록 차량, 누적 기록을 실시간으로 요약합니다</li>
+          </ul>
+          <div class="browser">
+            <div class="bar"><span></span><span></span><span></span></div>
+            <div class="body">
+              <div class="bstat-row">
+                <div class="bstat"><b>3</b><span>인가 지점</span></div>
+                <div class="bstat"><b>12</b><span>등록 차량</span></div>
+                <div class="bstat"><b>1,420</b><span>전체 기록</span></div>
+              </div>
+              <div class="btable">
+                <div class="thead"><span>지점</span><span>차량</span><span>기록시각</span><span>상태</span></div>
+                <div class="trow"><span>강남점</span><span>123가4567</span><span>11:30</span><span class="ok">완료</span></div>
+                <div class="trow"><span>분당점</span><span>45나6789</span><span>10:52</span><span class="ok">완료</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="steps">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-tag">이용 방법</span>
+        <h2 class="sec-title">이렇게 사용합니다</h2>
+        <p class="sec-desc">복잡한 교육 없이 세 단계로 끝나는 간단한 흐름입니다.</p>
+      </div>
+      <div class="step-row">
+        <div class="step reveal">
+          <div class="step-connector"></div>
+          <div class="step-media">
+            <img src="cars/images/s01.jpg" alt="차량 출발 전 운행 정보를 등록하는 모습">
+            <div class="step-num">01</div>
+          </div>
+          <div class="step-body">
+            <span class="step-label">STEP 01 · START</span>
+            <h3>출발 등록</h3>
+            <p>출발 시간과 계기판 거리를 입력합니다.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-connector"></div>
+          <div class="step-media">
+            <img src="cars/images/s02.jpg" alt="차량 도착 정보를 확인하는 모습">
+            <div class="step-num">02</div>
+          </div>
+          <div class="step-body">
+            <span class="step-label">STEP 02 · ARRIVE</span>
+            <h3>도착 등록</h3>
+            <p>도착 시간과 거리만 입력하면 등록이 끝납니다.</p>
+          </div>
+        </div>
+        <div class="step reveal">
+          <div class="step-connector"></div>
+          <div class="step-media">
+            <img src="cars/images/s03.jpg" alt="본사에서 차량 운행 현황을 모니터링하는 모습">
+            <div class="step-num">03</div>
+          </div>
+          <div class="step-body">
+            <span class="step-label">STEP 03 · REPORT</span>
+            <h3>자동 정산</h3>
+            <p>주행 거리와 지출 내역이 정리되어 본사로 전달됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUDIENCE -->
+  <section class="audience">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-tag">이런 팀에 잘 맞습니다</span>
+        <h2 class="sec-title">여러 지점에서 차량을 함께 쓰는 조직</h2>
+      </div>
+      <div class="audience-grid">
+        <div class="audience-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-6h6v6"/></svg></div>
+          <h4>다지점 영업 조직</h4>
+          <p>지점마다 배정된 차량과 운행 현황을 본사에서 통합 관리합니다.</p>
+        </div>
+        <div class="audience-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22h12M6 22V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v16M16 8l3 3v6a1.5 1.5 0 0 0 3 0v-4l-2-4"/></svg></div>
+          <h4>업무차량 보유 기업</h4>
+          <p>공용 차량의 운행일지와 유류비를 수기 없이 자동으로 기록합니다.</p>
+        </div>
+        <div class="audience-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 10h18M7 15h4"/></svg></div>
+          <h4>경비 정산 담당자</h4>
+          <p>영수증 기반 정비·통행료 지출을 항목별로 모아 정산 시간을 줄입니다.</p>
+        </div>
+        <div class="audience-card reveal">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>
+          <h4>렌트·리스 관리 업체</h4>
+          <p>다수 차량의 배정과 사용 기록을 하나의 콘솔에서 확인합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact">
+    <div class="cta reveal">
+      <div class="cta-copy">
+        <span class="cta-kicker">GET STARTED</span>
+        <h2>지금 바로 시작해 보세요</h2>
+        <p>복잡한 설치 없이 웹과 모바일에서 바로 이용할 수 있습니다. 이용 요금은 무료이며, 기존에 작성하던 운행일지 데이터도 옮겨 드립니다.</p>
+      </div>
+      <div class="cta-actions">
+        <div class="cta-btns">
+          <a class="btn btn-light" href="cars/user.html">이용자 시스템 접속</a>
+          <a class="btn btn-outline-white" href="https://forms.gle/3faKBDLgqb5SQYDZA" target="_blank">도입 문의하기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT LEASEMANSOFT -->
+  <!-- ABOUT LEASEMANSOFT -->
+  <section class="about" id="about" style="padding:112px 0 120px; background:#ffffff;">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="sec-tag" style="color:var(--blue-600); font-weight:800; letter-spacing:.08em;">ABOUT US</span>
+        <h2 class="sec-title">실무 현장의 혁신을 만드는<br>소프트웨어 파트너, 리스맨소프트</h2>
+        <p class="sec-desc">복잡하고 번거로운 현장 업무를 직관적이고 스마트한 디지털 전산으로 전환합니다.</p>
+      </div>
+
+      <div class="about-grid reveal">
+        
+        <!-- 좌측: 회사 소개 및 비전 스토리 -->
+        <div class="about-card-left" style="background:var(--blue-50); border:1px solid #dfe7fb; border-radius:20px; padding:38px 34px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <span style="display:inline-block; font-size:12px; font-weight:800; color:var(--blue-700); background:#fff; border:1px solid #c9d8f5; border-radius:999px; padding:4px 12px; margin-bottom:16px;">
+              SINCE 2018. 10
+            </span>
+            <h3 style="font-size:clamp(19px, 2.5vw, 22px); font-weight:800; color:var(--ink-900); margin:0 0 16px; letter-spacing:-0.03em; line-height:1.4;">
+              사용자 중심의 설계로<br>업무 효율의 본질에 집중합니다
+            </h3>
+            <p style="font-size:14px; color:var(--ink-700); line-height:1.8; margin:0 0 12px;">
+              <strong>리스맨소프트</strong>는 2018년 10월 첫발을 내디딘 이후, 실무 현장의 필요를 가장 빠르고 정확하게 반영하는 실용적인 소프트웨어 전문 기업입니다.
+            </p>
+            <p style="font-size:13.5px; color:var(--ink-500); line-height:1.8; margin:0;">
+              대표 솔루션인 <strong>임대관리 프로그램 '리스맨'</strong>의 운영 노하우를 바탕으로, 스마트 업무차량 운행일지 솔루션 <strong>'KlassAuto'</strong> 등 불필요한 행정 소요를 줄이고 핵심 업무에만 집중할 수 있는 최적의 프로그램을 개발·공급하고 있습니다.
+            </p>
+          </div>
+
+          <div class="about-stat-row" style="margin-top:24px; padding-top:18px; border-top:1px dashed #c9d8f5; display:flex; gap:18px; flex-wrap:wrap;">
+            <div>
+              <small style="display:block; font-size:11px; color:var(--ink-500); font-weight:700;">대표 솔루션</small>
+              <strong style="font-size:13.5px; color:var(--blue-800);">임대관리 '리스맨'</strong>
+            </div>
+            <div class="about-stat-sep" style="width:1px; background:#dfe7fb;"></div>
+            <div>
+              <small style="display:block; font-size:11px; color:var(--ink-500); font-weight:700;">모빌리티 솔루션</small>
+              <strong style="font-size:13.5px; color:var(--blue-800);">차량관리 'KlassAuto'</strong>
+            </div>
+            <div class="about-stat-sep" style="width:1px; background:#dfe7fb;"></div>
+            <div>
+              <small style="display:block; font-size:11px; color:var(--ink-500); font-weight:700;">핵심 가치</small>
+              <strong style="font-size:13.5px; color:var(--blue-800);">현장 친화적 UI / 자동화</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- 우측: 기업 개요 카드 -->
+        <div class="about-card-right" style="background:#fff; border:1px solid #dfe5ef; border-radius:20px; padding:34px 30px; box-shadow:0 12px 30px rgba(20,40,110,0.05); display:flex; flex-direction:column; justify-content:center;">
+          <h4 style="font-size:16px; font-weight:800; color:var(--ink-900); margin:0 0 18px; padding-bottom:12px; border-bottom:2px solid var(--blue-600);">
+            기업 개요 (Company Profile)
+          </h4>
+          
+          <dl class="about-dl" style="margin:0; display:grid; grid-template-columns:85px minmax(0, 1fr); row-gap:12px; column-gap:10px; font-size:13.5px; line-height:1.6;">
+            <dt style="font-weight:700; color:var(--ink-500);">회사명</dt>
+            <dd style="margin:0; font-weight:700; color:var(--ink-900);">리스맨소프트 (LEASEMANSOFT)</dd>
+
+            <dt style="font-weight:700; color:var(--ink-500);">설립연월</dt>
+            <dd style="margin:0; color:var(--ink-700);">2018년 10월</dd>
+
+            <dt style="font-weight:700; color:var(--ink-500);">대표자</dt>
+            <dd style="margin:0; color:var(--ink-700);">유진희</dd>
+
+            <dt style="font-weight:700; color:var(--ink-500);">사업 분야</dt>
+            <dd style="margin:0; color:var(--ink-700);">
+              • 부동산 임대관리 솔루션 (리스맨)<br>
+              • 스마트 차량 운행·경비 관제 (KlassAuto)<br>
+              • 기업 맞춤형 업무 자동화 소프트웨어 개발
+            </dd>
+
+            <dt style="font-weight:700; color:var(--ink-500);">소재지</dt>
+            <dd style="margin:0; color:var(--ink-700);">서울 동대문구 천호대로77가길 9-2, 3층 (장안동)</dd>
+
+            <dt style="font-weight:700; color:var(--ink-500);">문의처</dt>
+            <dd style="margin:0; color:var(--ink-700);">02-6212-7107 / leasemansoft@naver.com</dd>
+          </dl>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-info">
+    <div class="footer-row">
+      <span class="footer-item">상호: 리스맨소프트</span><span class="footer-sep">|</span>
+      <span class="footer-item">주소: 서울 동대문구 천호대로77가길 9-2, 3층 (장안동)</span><span class="footer-sep">|</span>
+      <span class="footer-item">대표: 유진희</span><span class="footer-sep">|</span>
+      <span class="footer-item">전화: 02-6212-7107</span>
+    </div>
+    <div class="footer-row">
+      <span class="footer-item">이메일: leasemansoft@naver.com</span><span class="footer-sep">|</span>
+      <span class="footer-item">사업자등록번호: 745-06-01064</span><span class="footer-sep">|</span>
+      <span class="footer-item">통신판매업신고번호: 제2026-서울동대문-1498호</span>
+    </div>
+    <div class="footer-copy">ⓒ LEASEMANSOFT ALL RIGHTS RESERVED.</div>
+  </div>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <div class="brand" style="color:var(--blue-800);">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 15.5 5.6 10a2 2 0 0 1 1.9-1.4h9a2 2 0 0 1 1.9 1.4L20 15.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="3.2" y="15.3" width="17.6" height="4.4" rx="1.6" stroke="#fff" stroke-width="1.8"/><circle cx="7.3" cy="19.9" r="1.1" fill="#fff"/><circle cx="16.7" cy="19.9" r="1.1" fill="#fff"/></svg></span>
+          <span>KlassAuto</span>
+        </div>
+        <p>스마트 업무용 차량 운행일지 및 지출 관리 시스템</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h5>서비스</h5>
+          <a href="#features">주요 기능</a>
+          <a href="#user-view">이용자 시스템</a>
+          <a href="#admin-view">본부 통합관리</a>
+        </div>
+        <div class="foot-col">
+          <h5>바로가기</h5>
+          <a href="user.html">직원 로그인</a>
+          <a href="admin.html">본사 관제 로그인</a>
+          <a href="https://forms.gle/3faKBDLgqb5SQYDZA">도입 문의</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-legal">
+        리스맨소프트&nbsp;·&nbsp;대표 유진희&nbsp;·&nbsp;서울 동대문구 천호대로77가길 9-2, 3층 (장안동)<br>
+        사업자등록번호 745-06-01064&nbsp;·&nbsp;통신판매업신고 제2026-서울동대문-1498호<br>
+        전화 02-6212-7107&nbsp;·&nbsp;이메일 leasemansoft@naver.com
+      </div>
+      <div class="foot-copy">ⓒ LEASEMANSOFT ALL RIGHTS RESERVED.</div>
+    </div>
+  </div>
+</footer>
+
+<a href="https://pf.kakao.com/_MYRxaX" target="_blank" rel="noopener noreferrer" class="kakao-float" aria-label="카카오톡 1:1 상담하기">
+  <svg viewBox="0 0 24 24" fill="#000000">
+    <path d="M12 3c-5.523 0-10 3.582-10 8 0 2.85 1.865 5.35 4.675 6.72-.205.76-.745 2.76-.855 3.19-.135.53.195.52.41.38.17-.11 2.7-1.84 3.79-2.58.64.09 1.3.14 1.98.14 5.523 0 10-3.582 10-8s-4.477-8-10-8z"/>
+  </svg>
+  <span>카톡 상담</span>
+</a>
+
+<script>
+  // mobile nav
+  var mnav = document.getElementById('mnav');
+  var siteHeader = document.querySelector('header');
+  function updateHeaderState(){ siteHeader.classList.toggle('is-scrolled', window.scrollY > 24); }
+  updateHeaderState();
+  window.addEventListener('scroll', updateHeaderState, {passive:true});
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var heroSlides = document.querySelectorAll('.hero-slide');
+  var heroIndex = 0;
+  if (heroSlides.length > 1 && !reduceMotion){
+    window.setInterval(function(){
+      heroSlides[heroIndex].classList.remove('is-active');
+      heroIndex = (heroIndex + 1) % heroSlides.length;
+      heroSlides[heroIndex].classList.add('is-active');
+    }, 4000);
+  }
+  var audienceSection = document.querySelector('.audience');
+  function updateAudienceParallax(){
+    if(!audienceSection || reduceMotion) return;
+    var rect = audienceSection.getBoundingClientRect();
+    var distance = (window.innerHeight * 0.5) - (rect.top + rect.height * 0.5);
+    audienceSection.style.setProperty('--audience-shift', (distance * 0.06).toFixed(2) + 'px');
+  }
+  updateAudienceParallax();
+  window.addEventListener('scroll', updateAudienceParallax, {passive:true});
+  window.addEventListener('resize', updateAudienceParallax);
+  document.getElementById('menuOpen').addEventListener('click', function(){ mnav.classList.add('open'); });
+  document.getElementById('menuClose').addEventListener('click', function(){ mnav.classList.remove('open'); });
+  mnav.addEventListener('click', function(e){ if(e.target === mnav) mnav.classList.remove('open'); });
+  mnav.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ mnav.classList.remove('open'); }); });
+
+  // scroll reveal
+  if ('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){ entry.target.classList.add('in'); obs.unobserve(entry.target); }
+      });
+    }, {threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+  }
+</script>
+
+</body>
+</html>

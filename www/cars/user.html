@@ -7,8 +7,13 @@
     <title>이용자 운행일지</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 💡 외부 CSS 파일 연결 -->
+    <link rel="stylesheet" href="css/style_user.css">
+
     <script src="js/quotes.js"></script>
     <style>
         /* 🔍 전체 화면 기본 폰트 비율 10% 확대 */
@@ -16,8 +21,9 @@
             font-size: 110%;
         }
         body { 
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; 
         }
+        
         /* 스크롤바 스타일링 */
         ::-webkit-scrollbar {
             width: 6px;
@@ -33,66 +39,72 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        
+        @font-face {
+            font-family: 'Pretendard';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+            font-weight: 500;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Eommakkaturi';
+            src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/Katuri.woff') format('woff');
+            font-weight: normal;
+            font-display: swap;
+        }
+        .ridi-font {
+            font-family: 'Pretendard', serif;
+        }
+        .kkaturi-font {
+            font-family: "Eommakkaturi", serif;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-gray-800 min-h-screen flex flex-col">
 
     <!-- 1. 로그인 스크린 (중앙 배치 카드 + 하단 일시/인사말) -->
-    <div id="login-screen" class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="max-w-md w-full bg-white p-8 sm:p-10 rounded-2xl border border-slate-200 shadow-xl">
-            <div class="text-center mb-8">
-                <!-- KlassAuto 파란색 브랜드 로고 이미지 -->
-                <div class="flex justify-center items-center mb-2">
-                    <img src="img/logo_blue.png" alt="KlassAuto" class="h-16 sm:h-20 w-auto object-contain drop-shadow-sm">
-                </div>
-                <h2 class="text-xl font-bold text-gray-800">업무용 차량 운행일지 프로그램</h2>
-                <p class="text-slate-500 text-sm mt-1 font-medium">이용자 계정으로 로그인해 주세요</p>
-            </div>
-            
-            <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1.5">아이디</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                            <i class="fa-solid fa-user"></i>
-                        </span>
-                        <input type="text" id="user-id" required 
-                               class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-base outline-none transition" 
-                               placeholder="아이디 입력">
+    <div id="login-screen" class="min-h-screen flex flex-col items-center justify-center p-4 page">
+        <div class="page">
+            <main class="auth-shell" aria-label="KlassAuto 이용자 로그인">
+            <section class="visual-panel" aria-label="KlassAuto 차량 운행 이미지">
+                <img class="visual-brand" src="images/logo02.png" alt="KlassAuto">
+                <span class="visual-meta">SMART FLEET · ON THE MOVE</span>
+                <span class="visual-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.3 6-11a6 6 0 1 0-12 0c0 5.7 6 11 6 11Z"/><circle cx="12" cy="10" r="2"/></svg></span>
+            </section>
+            <section class="form-panel" aria-labelledby="login-title">
+                <div class="form-inner">
+                <div class="form-head"><img class="form-logo" src="images/logo.png" alt="KlassAuto"><h1 id="login-title" class="form-title">업무용 차량 운행일지 프로그램</h1><p class="form-subtitle">이용자 계정으로 로그인해 주세요</p></div>
+                <form id="loginForm" novalidate onsubmit="handleLogin(event)">
+                    <div class="field">
+                        <label class="field-label" for="userId">아이디</label>
+                        <div class="input-wrap"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-3.3 3.1-5 7-5s6.3 1.7 7 5"/></svg>
+                            <input id="user-id" name="userId" type="text" autocomplete="username" placeholder="아이디 입력">
+                        </div>
                     </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1.5">비밀번호</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                            <i class="fa-solid fa-lock"></i>
-                        </span>
-                        <input type="password" id="user-pw" required 
-                               class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-base outline-none transition" 
-                               placeholder="비밀번호 입력">
+                    <div class="field">
+                        <label class="field-label" for="password">비밀번호</label>
+                        <div class="input-wrap has-toggle"><svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                            <input id="user-pw" name="password" type="password" autocomplete="current-password" placeholder="비밀번호 입력">
+                            <button class="password-toggle" id="passwordToggle" type="button" aria-label="비밀번호 표시"><svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
+                        </div>
                     </div>
+                    <div class="form-options"><label class="remember">
+                        <input type="checkbox" id="remember"><span class="checkmark" aria-hidden="true"></span>아이디 저장</label>                        
+                        <a href="javascript:void(0);" onclick="alert('비밀번호 초기화 등 계정 문의는 회사 담당자에게 문의하세요.');" class="account-link cursor-pointer">계정 문의</a>
+                    </div>
+                    <button class="submit" type="submit">이용자 시스템 접속<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+                    <div class="notice" id="notice" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>아이디와 비밀번호를 모두 입력해 주세요.</div>
+                </form>
+                <nav class="form-foot" aria-label="보조 메뉴">
+                    <a href="/index.html">서비스 소개</a><span class="divider"></span>
+                    <a href="https://forms.gle/3faKBDLgqb5SQYDZA" target="_blank">도입 문의</a><span class="divider"></span>
+                    <a href="https://pf.kakao.com/_MYRxaX" target="_blank">고객센터</a></nav>
                 </div>
-
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-bold text-base shadow-lg shadow-blue-500/25 transition duration-200 mt-2">
-                    이용자 시스템 접속
-                </button>
-            </form>
-            <p id="login-error" class="text-red-500 text-sm text-center mt-3 hidden font-semibold">아이디 또는 비밀번호가 올바르지 않습니다.</p>
-        </div>
-
-        <!-- 🌟 [추가] 로그인 카드 하단 실시간 일시/시계 및 인사말(명언) 영역 -->
-        <div class="mt-8 text-center max-w-4xl w-full px-4 space-y-3">
-            <!-- 1. 날짜 및 실시간 시/분/초 뱃지 -->
-            <div class="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white border border-slate-200 text-blue-600 text-sm sm:text-base font-bold shadow-sm">
-                <i class="fa-regular fa-calendar-check text-blue-500 text-base sm:text-lg"></i>
-                <span id="login-today-date" class="text-slate-700">날짜를 불러오는 중...</span>
-            </div>
-
-            <!-- 2. 대형 인사말 / 오늘의 명언 문구 -->
-            <p id="login-daily-greeting" class="text-lg sm:text-xl md:text-2xl text-slate-700 font-bold leading-normal break-keep drop-shadow-xs">
-                인사말을 불러오는 중입니다...
-            </p>
+            </section>
+            </main>
+            <div class="below"><span class="date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 2v3M16 2v3M4 9h16M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01"/></svg><span id="today">현재 시간을 불러오는 중</span></span></div>
+            <p class="quote kkaturi-font" id="login-daily-greeting">지나가는 길에 마주친 풍경 하나도 기분 좋은 선물이 되길 바랍니다.</p>
+            <p class="copyright">ⓒ LEASEMANSOFT ALL RIGHTS RESERVED.</p>
         </div>
     </div>
 
@@ -106,7 +118,7 @@
                 <!-- 👈 [좌측 상단] 로고 + 시스템 뱃지 + 오늘의 명언 띠 -->
                 <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-3">
-                        <img src="img/logo_blue.png" alt="KlassAuto" class="h-7 sm:h-8 w-auto object-contain drop-shadow-sm">
+                        <img src="img/logo_blue.webp" alt="KlassAuto" class="h-3 sm:h-4 w-auto object-contain drop-shadow-sm">
                         <span class="text-sm bg-blue-50 text-blue-600 border border-blue-200 font-bold px-3 py-1 rounded-md"><span id="company_name"></span> 운행일지</span>
                     </div>
 
@@ -114,7 +126,7 @@
                     <div class="flex items-center gap-2 text-xs sm:text-sm text-slate-600 bg-slate-50 border border-slate-200/90 px-3 py-1.5 rounded-lg max-w-xl shadow-xs">
                         <span class="text-blue-600 font-extrabold shrink-0">✨ 오늘의 한마디</span>
                         <span class="text-slate-300 shrink-0">|</span>
-                        <span id="today-quote-text" class="font-medium text-slate-700 truncate">명언을 불러오는 중입니다...</span>
+                        <span id="today-quote-text" class="font-medium text-slate-700 truncate kkaturi-font">명언을 불러오는 중입니다...</span>
                     </div>
                 </div>
                 
@@ -188,10 +200,10 @@
                                             <label class="block text-xs font-bold text-slate-600 mb-1">출발 주행거리 (km)</label>
                                             <input type="number" id="start-km" class="w-full p-2.5 border rounded-lg text-sm sm:text-base bg-white font-mono" placeholder="예: 12500" inputmode="numeric" pattern="[0-9]*">
                                         </div>
-                                        <div>
+                                        <!-- <div>
                                             <label class="block text-xs font-bold text-slate-600 mb-1">계기판 사진 (선택)</label>
                                             <input type="file" id="start-photo" accept="image/*" class="w-full text-xs text-gray-500 border p-2 rounded-lg bg-white">
-                                        </div>
+                                        </div> -->
                                     </div>
 
                                     <!-- 도착 정보 -->
@@ -213,10 +225,10 @@
                                             <label class="block text-xs font-bold text-slate-600 mb-1">도착 주행거리 (km)</label>
                                             <input type="number" id="end-km" class="w-full p-2.5 border rounded-lg text-sm sm:text-base bg-white font-mono" placeholder="예: 12580" inputmode="numeric" pattern="[0-9]*">
                                         </div>
-                                        <div>
+                                        <!-- <div>
                                             <label class="block text-xs font-bold text-slate-600 mb-1">계기판 사진 (선택)</label>
                                             <input type="file" id="end-photo" accept="image/*" class="w-full text-xs text-gray-500 border p-2 rounded-lg bg-white">
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 
@@ -371,22 +383,22 @@
         <footer class="mt-auto border-t border-gray-200 bg-white py-6 text-gray-400 text-center text-xs leading-relaxed font-medium">
             <div class="max-w-7xl mx-auto px-4">
                 <div class="flex flex-wrap justify-center gap-x-2 gap-y-1">
-                    <span><b>상호:</b> 리스맨소프트</span>
+                    <span><b>상호:</b> 클라스오토</span>
                     <span>|</span>
-                    <span><b>주소:</b> 서울 동대문구 천호대로 441-1, 2층</span>
+                    <span><b>주소:</b> 서울 노원구 동일로243길49, 4층 (상계동, 씨에스빌딩)</span>
                     <span>|</span>
-                    <span><b>대표:</b> 유진희</span>
+                    <span><b>대표:</b> 김한주</span>
                     <span>|</span>
                     <span><b>전화:</b> 02-6212-7107</span>
                 </div>
                 <div class="flex flex-wrap justify-center gap-x-2 gap-y-1 mt-1">
-                    <span><b>이메일:</b> leasemansoft@naver.com</span>
+                    <span><b>이메일:</b> info@klassauto.kr</span>
                     <span>|</span>
-                    <span><b>사업자등록번호:</b> 745-06-01064</span>
-                    <span>|</span>
-                    <span><b>통신판매업신고번호:</b> 제2026-서울동대문-1498호</span>
+                    <span><b>사업자등록번호:</b> 102-22-95843</span>
+                    <!-- <span>|</span>
+                    <span><b>통신판매업신고번호:</b> 제2026-서울동대문-1498호</span> -->
                 </div>
-                <p class="mt-2.5 text-gray-300 font-bold font-mono tracking-wide">ⓒ LEASEMANSOFT ALL RIGHTS RESERVED.</p>
+                <p class="mt-2.5 text-gray-300 font-bold font-mono tracking-wide">ⓒ KLASSAUTO ALL RIGHTS RESERVED.</p>
             </div>
         </footer>
     </div>
@@ -396,6 +408,7 @@
         // 백엔드 API 서버 기본 주소
         const SERVER_URL = "https://charm3007.cafe24.com/cars/api";
 
+        let currentUserId = "";
         let currentUserName = "";
         let currentBranchName = "";
         let currentUserRole = "";
@@ -412,7 +425,7 @@
         // 🌟 [추가] 오늘 날짜 및 실시간 시/분/초 표출 함수 (한국어 형식)
         // ----------------------------------------------------
         function displayTodayDate() {
-            const dateEl = document.getElementById('login-today-date');
+            const dateEl = document.getElementById('today');
             if (!dateEl) return;
             
             const now = new Date();
@@ -483,19 +496,22 @@
         // 0. 🚀 페이지 로드 시 초기화
         // ----------------------------------------------------
         document.addEventListener("DOMContentLoaded", async () => {
-            // 🌟 로그인 화면용 시계 및 인사말 실행
+            // 로그인 화면용 시계 및 인사말 실행
             displayTodayDate();
-            setInterval(displayTodayDate, 1000); // 1초마다 실시간 시/분/초 갱신
+            setInterval(displayTodayDate, 1000);
             loadRandomGreetingFromCSV();
 
             // 상단 바 명언
             setRandomQuote();
 
-            const savedUser = localStorage.getItem("car_system_user");
-            if (savedUser) {
+            // ★ 저장된 ID와 사용자 정보 복원
+            const savedUserId = localStorage.getItem("car_system_user_id") || "";
+            const savedUserStr = localStorage.getItem("car_system_user");
+
+            if (savedUserId && savedUserStr) {
                 try {
-                    const userInfo = JSON.parse(savedUser);
-                    applyLoginState(userInfo);
+                    const userInfo = JSON.parse(savedUserStr);
+                    applyLoginState(userInfo, savedUserId);
                     await loadServerData();
                     setDefaultDates();
                 } catch (e) {
@@ -522,28 +538,20 @@
             }
         }
 
-        // ----------------------------------------------------
-        // 0. 🚀 페이지 로드 시 로그인 세션 체크 및 명언 표출
-        // ----------------------------------------------------
-        document.addEventListener("DOMContentLoaded", async () => {
-            setRandomQuote();
-
-            const savedUser = localStorage.getItem("car_system_user");
-            if (savedUser) {
-                try {
-                    const userInfo = JSON.parse(savedUser);
-                    applyLoginState(userInfo);
-                    await loadServerData();
-                    setDefaultDates();
-                } catch (e) {
-                    console.error("세션 복원 실패:", e);
-                    handleLogout();
-                }
-            }
-        });
-
+        
         // 로그인 화면 -> 메인 화면 전환 UI 적용 함수
-        function applyLoginState(userInfo) {
+        function applyLoginState(userInfo, loginId = "") {
+            // 1순위: 전달받은 loginId, 2순위: localStorage, 3순위: userInfo 객체 속성
+            const savedLoginId = localStorage.getItem("car_system_user_id") || "";
+            currentUserId = String(
+                loginId ||
+                savedLoginId ||
+                userInfo.user_id ||
+                userInfo.userid ||
+                userInfo.id ||
+                ""
+            ).trim();
+
             currentUserName = userInfo.name || "";
             currentBranchName = userInfo.branch || "";
             currentUserRole = userInfo.role || "";
@@ -577,7 +585,7 @@
 
             const idInput = document.getElementById('user-id');
             const pwInput = document.getElementById('user-pw');
-            const loginError = document.getElementById('login-error');
+            const loginError = document.getElementById('notice');
 
             if (!idInput || !pwInput) return;
 
@@ -601,18 +609,14 @@
                 if (result.success) {
                     const userInfo = result.user || result;
 
-                    currentUserName = userInfo.name || "";
-                    currentBranchName = userInfo.branch || "";
-                    currentUserRole = userInfo.role || "";
-                    currentCompanyId = userInfo.company_id || "";
-                    currentCompanyName = userInfo.company_name || "";
-
-
+                    // ★ PHP를 건드리지 않고, 입력했던 id를 전역변수와 localStorage에 확실히 고정
+                    currentUserId = id;
+                    localStorage.setItem("car_system_user_id", id);
                     localStorage.setItem("car_system_user", JSON.stringify(userInfo));
 
                     if (loginError) loginError.classList.add('hidden');
 
-                    applyLoginState(userInfo);
+                    applyLoginState(userInfo, id);
                     await loadServerData();
                     setDefaultDates();
 
@@ -677,7 +681,11 @@
                 vehicle_num: currentVehicleNum,
                 type: logType,
                 branch_name: currentBranchName,
+
+                // ★ 반드시 로그인한 아이디를 함께 저장
+                user_id: currentUserId,
                 user_name: currentUserName,
+
                 memo: document.getElementById('content-memo').value.trim()
             };
 
@@ -731,9 +739,11 @@
         // ----------------------------------------------------
         function handleLogout() {
             localStorage.removeItem("car_system_user");
+            localStorage.removeItem("car_system_user_id");
 
             currentCompanyId = "";
             currentCompanyName = "";
+            currentUserId = "";
             currentUserName = "";
             currentBranchName = "";
             currentUserRole = "";
@@ -808,6 +818,37 @@
             }
         }
 
+        function formatDateTime(dateTime) {
+            if (!dateTime) return '';
+
+            const date = new Date(dateTime.replace(' ', 'T'));
+
+            const days = ['일', '월', '화', '수', '목', '금', '토'];
+
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return `${year}-${month}-${day} (${days[date.getDay()]}) ${hours}:${minutes}`;
+        }
+
+        function formatDate(dateValue) {
+            if (!dateValue) return '';
+
+            const date = new Date(dateValue + 'T00:00:00');
+
+            const days = ['일', '월', '화', '수', '목', '금', '토'];
+
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            return `${year}-${month}-${day} (${days[date.getDay()]})`;
+        }
+
         // 🔍 글자 크기(text-sm, text-base)를 시원하게 키운 카드 HTML 생성 함수
         function createCardHTML(item) {
             const startKm = Number(item.start_km || 0);
@@ -818,7 +859,50 @@
             const distanceFormatted = (endKm - startKm).toLocaleString();
             const amountFormatted = Number(item.amount || 0).toLocaleString();
 
-            const editClickAttr = `onclick="openEditModal('${item.id}')" title="클릭하여 내역 수정/삭제"`;
+            // ★ 기록의 작성자 아이디를 확인한다.
+            // 새 기록은 item.user_id를 사용하고,
+            // 기존 기록에 user_id가 없는 경우 users 목록에서 작성자명을 찾아 아이디를 복원한다.
+            let itemUserId = String(
+                item.user_id ||
+                item.userid ||
+                item.writer_id ||
+                ""
+            ).trim();
+
+            if (!itemUserId && item.user_name && Array.isArray(MOCK_USERS)) {
+                const matchedUsers = MOCK_USERS.filter(user => {
+                    const userName = String(
+                        user.name ||
+                        user.user_name ||
+                        user.username ||
+                        ""
+                    ).trim();
+
+                    return userName !== "" &&
+                           userName === String(item.user_name).trim();
+                });
+
+                // 이름이 정확히 1명에게만 연결될 때만 ID를 복원
+                if (matchedUsers.length === 1) {
+                    itemUserId = String(
+                        matchedUsers[0].user_id ||
+                        matchedUsers[0].userid ||
+                        matchedUsers[0].login_id ||
+                        matchedUsers[0].id ||
+                        ""
+                    ).trim();
+                }
+            }
+
+            const isOwner =
+                String(currentUserId).trim() !== "" &&
+                itemUserId !== "" &&
+                String(currentUserId).trim() === itemUserId;
+
+            // ★ 본인일 때만 onclick 자체를 생성한다.
+            const editClickAttr = isOwner
+                ? `onclick="openEditModal('${item.id}')" title="클릭하여 내역 수정/삭제"`
+                : "";
 
             if (item.type === "운행") {
                 return `
@@ -826,15 +910,15 @@
                         <div class="flex items-center gap-2">
                             <span class="bg-blue-100 text-blue-700 font-bold px-2.5 py-0.5 rounded text-xs">📋 운행</span>
                             <!-- 💡 작성자 이름 클릭 시 수정 모달 오픈 -->
-                            <span ${editClickAttr} class="text-sm font-semibold text-gray-800 hover:text-blue-600 hover:underline cursor-pointer flex items-center gap-1 group">
-                                ${item.user_name} <i class="fa-solid fa-pen-to-square text-[11px] text-slate-400 group-hover:text-blue-500"></i>
+                            <span ${editClickAttr} class="text-sm font-semibold text-gray-800 ${isOwner ? 'hover:text-blue-600 hover:underline cursor-pointer group' : ''} flex items-center gap-1">
+                                ${item.user_name}${isOwner ? ' <i class="fa-solid fa-pen-to-square text-[11px] text-slate-400 group-hover:text-blue-500"></i>' : ''}
                             </span>
                         </div>
                         <span class="text-xs bg-slate-100 text-slate-600 font-medium px-2 py-0.5 rounded">${item.purpose || '일반업무용'}</span>
                     </div>
-                    <div class="space-y-1.5 text-sm text-gray-700">
-                        <p>🛫 <span class="font-semibold text-gray-900">출발:</span> ${item.start_datetime} (${startKmFormatted} km)</p>
-                        <p>🛬 <span class="font-semibold text-emerald-700">도착:</span> ${item.end_datetime} (${endKmFormatted} km, 주행: <b class="text-blue-600 font-bold">${distanceFormatted} km</b>)</p>
+                    <div class="space-y-1.5 text-xs text-gray-700 ridi-font">
+                        <p>🛫 <span class="font-semibold text-gray-900">출발:</span> ${formatDateTime(item.start_datetime)} (${startKmFormatted} km)</p>
+                        <p>🛬 <span class="font-semibold text-emerald-700">도착:</span> ${formatDateTime(item.end_datetime)} (${endKmFormatted} km, 주행: <b class="text-blue-600 font-bold">${distanceFormatted} km</b>)</p>
                     </div>
                 `;
             } else {
@@ -843,14 +927,14 @@
                         <div class="flex items-center gap-2">
                             <span class="bg-amber-100 text-amber-700 font-bold px-2.5 py-0.5 rounded text-xs">💳 지출</span>
                             <!-- 💡 작성자 이름 클릭 시 수정 모달 오픈 -->
-                            <span ${editClickAttr} class="text-sm font-semibold text-gray-800 hover:text-blue-600 hover:underline cursor-pointer flex items-center gap-1 group">
-                                ${item.user_name} <i class="fa-solid fa-pen-to-square text-[11px] text-slate-400 group-hover:text-blue-500"></i>
+                            <span ${editClickAttr} class="text-sm font-semibold text-gray-800 ${isOwner ? 'hover:text-blue-600 hover:underline cursor-pointer group' : ''} flex items-center gap-1">
+                                ${item.user_name}${isOwner ? ' <i class="fa-solid fa-pen-to-square text-[11px] text-slate-400 group-hover:text-blue-500"></i>' : ''}
                             </span>
                         </div>
                         <span class="text-xs font-bold text-amber-700">${item.expense_type}</span>
                     </div>
-                    <div class="space-y-1.5 text-sm text-gray-700">
-                        <p>📅 <span class="font-semibold text-gray-900">지출일:</span> ${item.expense_date}</p>
+                    <div class="space-y-1.5 text-xs text-gray-700 ridi-font">
+                        <p>📅 <span class="font-semibold text-gray-900">지출일:</span> ${formatDate(item.expense_date)}</p>
                         <p class="text-amber-600 font-extrabold text-base">💰 금액: ${amountFormatted} 원</p>
                     </div>
                 `;
@@ -960,6 +1044,46 @@
                 alert("해당 기록 정보를 찾을 수 없습니다.");
                 return;
             }
+            // ★ 수정 모달을 직접 호출해도 다시 소유자 확인
+            let targetUserId = String(
+                target.user_id ||
+                target.userid ||
+                target.writer_id ||
+                ""
+            ).trim();
+
+            if (!targetUserId && target.user_name && Array.isArray(MOCK_USERS)) {
+                const matchedUsers = MOCK_USERS.filter(user => {
+                    const userName = String(
+                        user.name ||
+                        user.user_name ||
+                        user.username ||
+                        ""
+                    ).trim();
+
+                    return userName !== "" &&
+                           userName === String(target.user_name).trim();
+                });
+
+                if (matchedUsers.length === 1) {
+                    targetUserId = String(
+                        matchedUsers[0].user_id ||
+                        matchedUsers[0].userid ||
+                        matchedUsers[0].login_id ||
+                        matchedUsers[0].id ||
+                        ""
+                    ).trim();
+                }
+            }
+
+            if (
+                String(currentUserId).trim() === "" ||
+                targetUserId === "" ||
+                String(currentUserId).trim() !== targetUserId
+            ) {
+                alert("본인이 작성한 기록만 수정할 수 있습니다.");
+                return;
+            }
 
             document.getElementById('edit-log-id').value = target.id;
             document.getElementById('edit-log-type').value = target.type;
@@ -1000,19 +1124,77 @@
         }
 
         // ----------------------------------------------------
-        // 🌟 7. 기록 수정 전송 (UPDATE)
+        // 🌟 7. 기록 수정 전송 (수정 내용 없으면 중단 안내 추가)
         // ----------------------------------------------------
         async function handleUpdateLog(e) {
             e.preventDefault();
             const logId = document.getElementById('edit-log-id').value;
             const logType = document.getElementById('edit-log-type').value;
 
+            // 1. 기존 원본 데이터 조회
+            const original = MOCK_HISTORIES.find(item => String(item.id) === String(logId));
+            if (!original) {
+                alert("기존 기록 정보를 확인할 수 없습니다.");
+                return;
+            }
+
+            // 2. 현재 입력된 공통 값 추출
+            const newUserName = document.getElementById('edit-user-name').value.trim();
+            const newMemo = document.getElementById('edit-memo').value.trim();
+
+            // 3. 타입별(운행 / 지출) 변경 여부 체크
+            let isChanged = false;
+
+            if (logType === "운행") {
+                const newStartDt = document.getElementById('edit-start-datetime').value.trim();
+                const newStartKm = Number(document.getElementById('edit-start-km').value) || 0;
+                const newEndDt = document.getElementById('edit-end-datetime').value.trim();
+                const newEndKm = Number(document.getElementById('edit-end-km').value) || 0;
+                const newPurpose = document.getElementById('edit-drive-purpose').value;
+
+                // 원본과 비교
+                if (
+                    newUserName !== String(original.user_name || '').trim() ||
+                    newMemo !== String(original.memo || '').trim() ||
+                    newStartDt !== String(original.start_datetime || '').trim() ||
+                    newStartKm !== Number(original.start_km || 0) ||
+                    newEndDt !== String(original.end_datetime || '').trim() ||
+                    newEndKm !== Number(original.end_km || 0) ||
+                    newPurpose !== String(original.purpose || '일반업무용')
+                ) {
+                    isChanged = true;
+                }
+            } else {
+                const newExpenseDate = document.getElementById('edit-expense-date').value;
+                const newExpenseType = document.getElementById('edit-expense-type').value;
+                const newAmount = Number(document.getElementById('edit-amount').value) || 0;
+
+                // 원본과 비교
+                if (
+                    newUserName !== String(original.user_name || '').trim() ||
+                    newMemo !== String(original.memo || '').trim() ||
+                    newExpenseDate !== String(original.expense_date || '').trim() ||
+                    newExpenseType !== String(original.expense_type || '기타') ||
+                    newAmount !== Number(original.amount || 0)
+                ) {
+                    isChanged = true;
+                }
+            }
+
+            // ★ 수정된 내용이 하나도 없으면 경고 후 중단
+            if (!isChanged) {
+                alert("수정내용이 없습니다.");
+                return;
+            }
+
+            // 4. 변경 사항이 있을 때만 서버로 전송
             let payload = {
                 action: 'update_log',
                 id: logId,
                 type: logType,
-                user_name: document.getElementById('edit-user-name').value.trim(),
-                memo: document.getElementById('edit-memo').value.trim()
+                user_id: currentUserId,
+                user_name: newUserName,
+                memo: newMemo
             };
 
             if (logType === "운행") {
@@ -1059,7 +1241,11 @@
                 const res = await fetch(`${SERVER_URL}/manage.php`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'delete_log', id: logId })
+                    body: JSON.stringify({
+                        action: 'delete_log',
+                        id: logId,
+                        user_id: currentUserId
+                    })
                 });
                 const result = await res.json();
 
@@ -1099,7 +1285,7 @@
                 <!-- 작성자명 변경 -->
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">작성자 성명</label>
-                    <input type="text" id="edit-user-name" required class="w-full p-2.5 border rounded-xl bg-white">
+                    <input type="text" id="edit-user-name" required class="w-full p-2.5 border rounded-xl bg-white" disabled>
                 </div>
 
                 <!-- 1) 운행일 경우 폼 필드 -->

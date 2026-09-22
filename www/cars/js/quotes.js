@@ -497,7 +497,7 @@ const QUOTES_500 = [
     { id: 495, quote: "지혜로운 자는 고요함 속에서 힘을 기른다.", author: "노자", category: "지혜" },
     { id: 496, quote: "모든 위대한 일은 한 걸음부터 시작된다.", author: "도덕경", category: "시작" },
     { id: 497, quote: "신뢰는 인생에서 가장 값진 자산이다.", author: "버핏", category: "신뢰" },
-    { id: 498, quote: "꿈을 잃지 않는 한 실패는 없다.", author: "안창호", category: "희망" },
+    { id: 498, quote: "슬럼프는 자신내면의 꾀병이다.", author: "금메달리스트 이상화", category: "희망" },
     { id: 499, quote: "성실한 태도가 빛나는 미래를 연다.", author: "루소", category: "성실" },
     { id: 500, quote: "성공은 최종적인 것이 아니며, 실패는 치명적인 것이 아니다. 중요한 것은 계속할 용기다.", author: "윈스턴 처칠", category: "실행" }
 ];

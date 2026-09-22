@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>캐피탈별 탁송사·연락처·가상계좌</title>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap">
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+*{box-sizing:border-box} body{margin:0;padding:24px;background:#f5f6f8;color:#222;font-family:"Noto Sans KR","Malgun Gothic",Arial,sans-serif}
+.container{max-width:1600px;margin:auto} h1{margin:0 0 6px;font-size:24px} .desc{color:#666;font-size:14px;margin-bottom:16px}
+#search{width:100%;padding:12px 14px;border:1px solid #ccd1d8;border-radius:8px;font-size:15px;margin-bottom:14px;background:#fff}
+.wrap{overflow:auto;max-height:calc(100vh - 145px);background:#fff;border:1px solid #dfe3e8;border-radius:10px}
+table{width:100%;min-width:1100px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+th,td{padding:10px 14px;border-right:1px solid #e1e5ea;border-bottom:1px solid #e1e5ea;vertical-align:top;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}
+th{position:sticky;top:0;z-index:3;background:#343a40;color:#fff;text-align:center}
+td.capital{width:17%;background:#f8f9fb;font-weight:700;text-align:center;font-size:16px;position:sticky;left:0;z-index:2}
+td.info{width:41.5%} td div{margin-bottom:5px} td div:last-child{margin-bottom:0}
+/* a{color:#1769aa;text-decoration:underline} */
+.empty{color:#aaa} .hide{display:none}
+.search-highlight {
+    background-color: #fff200;
+    color: #000;
+    font-weight: 700;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+
+tbody,
+tbody td,
+tbody div {
+    /* font-family: "Courier New", "Nanum Gothic", sans-serif !important; */
+    font-family: "Pretendard", sans-serif !important;
+    font-size: 14px;
+}
+tbody a {
+  font-family: "Nanum Gothic", "나눔고딕", sans-serif;
+  font-size: 12px;
+  color: #3f6f9f;
+  font-weight: 600;
+  text-decoration: none;
+}
+tbody a:hover {
+    color: #1f4f7a;
+    text-decoration: underline;
+}
+.footer {
+    text-align: center;
+    padding: 20px 10px 10px;
+    margin-top: 20px;
+    color: #9aa0a6;
+    font-family: "Pretendard", "Nanum Gothic", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2px;
+}
+
+.footer strong {
+    color: #6f7782;
+    font-weight: 600;
+}
+
+.footer .copyright {
+    margin-top: 5px;
+    font-size: 10px;
+    color: #b0b5bb;
+}
+.header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 6px;
+}
+
+.logo {
+    width: 190px;
+    height: auto;
+    /* display: block; */
+}
+
+.header-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #222;
+}
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .logo {
+        width: 130px;
+    }
+
+    .header-title {
+        font-size: 19px;
+        /* line-height: 1.3; */
+    }
+
+    .desc {
+        font-size: 12px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
+    #search {
+        font-size: 14px;
+        padding: 10px 12px;
+        margin-bottom: 10px;
+    }
+
+    .wrap {
+        max-height: calc(100vh - 180px);
+        border-radius: 8px;
+    }
+
+    th,
+    td {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    td.capital {
+        font-size: 14px;
+    }
+
+    tbody a {
+        font-size: 11px;
+    }
+
+    .footer {
+        padding-top: 15px;
+        font-size: 10px;
+    }
+
+}
+</style>
+</head>
+<body>
+<div class="container">
+<!-- <h1>캐피탈별 탁송사 · 연락처 · 가상계좌</h1>
+<div class="desc">엑셀 원본의 행 순서를 유지하면서 캐피탈사별로 내용을 묶었습니다. 검색은 모든 표 내용을 대상으로 합니다.</div> -->
+<div class="header">
+    <img src="cars/img/unionlogo.png" alt="KLASSAUTO" class="logo">
+    <h1 class="header-title">캐피탈별 탁송사 · 연락처 · 가상계좌</h1>
+</div>
+
+<div class="desc">
+    엑셀 원본의 행 순서를 유지하면서 캐피탈사별로 내용을 묶었습니다. 검색은 모든 표 내용을 대상으로 합니다.
+</div>
+<input id="search" type="search" placeholder="캐피탈사 / 탁송사 / 차량 / 전화번호 / 주소 / 계좌번호 검색">
+<div class="wrap"><table id="t"><thead><tr>
+<th style="width:17%">캐피탈사</th><th style="width:41.5%">탁송사 / 연락처 / 주소 / 기타 안내</th><th style="width:41.5%">가상계좌 / 보증금·선수금 관련</th>
+</tr></thead>
+<tbody>
+  <tr>
+    <td class="capital">롯데오토리스<br>
+      <a href="https://sign.lotte-autolease.com/consent/input/etc"  onclick="openCapitalLink(this.href); return false;">신용조회</a><br>
+      <a href="https://epartner.lotte-autolease.com/"  onclick="openCapitalLink(this.href); return false;">SP포탈</a><br>
+</td>
+<td>
+  •용품업체<br>
+  - 팅크웨어 02-589-9321<br>
+  - 카네비모빌리티 032-505-4601<br>
+  - 태건 010-4937-7301 (바닥판)<br>
+  •탁송업체<br>
+  - 안성 배송센터 : 010-7557-1467<br>
+  •특장업체<br>
+  - 오텍 : 임준영 : 010-5214-0786<br>
+  - 한중특장 : 최지연 010-3234-4301 / 김현동 010-7204-2511</td>
+<td><span class="empty">-</span></td>
+</tr>
+<tr>
+  <td class="capital">농협캐피탈<br>
+    <a href="http://auto.nhcapital.co.kr" onclick="openCapitalLink(this.href); return false;">견적</a><br>
+  </td>
+  <td>
+    - 탁송업체 (메이트오토) : 031-526-2210
+     주소 : 경기도 화성시 우정읍 포승향남로 1395 대도철강 3층
+    - 고객행복센터 : 1644-3700</td>
+  <td>
+    [보증금 및 선납렌탈료 입금계좌번호]<br>
+    - 가상계좌 개별 SMS 발송</div></td>
+</tr>
+<tr>
+  <td class="capital">하나캐피탈<br>
+    <a href="https://m.hanacapital.co.kr"  onclick="openCapitalLink(this.href); return false;">견적</a><br>
+  </td>
+  <td><div>1️⃣ 25. 12. 23 기준 탁송사</div><div>➤ 유림 : 카니발, EV3, EV4, EV9, K9, 싼타페, 팰리세이드, 아반떼, 투싼, 코나, 스타리아, 아이오닉5, 베뉴</div><div>주소 : 평택시 도일동 1173-1</div><div>전화번호 : 070-4155-0735</div><div>➤ 스타오토케어 : 쏘렌토, K5, K8, 니로, EV6, PV5, 레이, 모닝, G80, GV70, GV80, G90, G70, GV60, 클레오스, 아르카나, QM6, 세닉, 트랙스, 트레이블레이저, 트레스, 액티언, 렉스턴, 티볼리</div><div>주소 : 용인시 처인구 성산로 520</div><div>전화번호 : 031-526-1052</div><div>➤ 선보 : 셀토스, 스포티지, EV5, 그랜저, 쏘나타, 캐스퍼, 아이오닉6, 아이오닉9</div><div>주소 : 평택시 서탄면 내천길 43-46</div><div>전화번호 : 010-5461-9680</div><div>➤ 오토클리닉 : 02-711-2763 / 2765 / 4200</div></td><td><div>2️⃣ 카렌탈지점 가상계좌</div><div>➤ 하나은행 591-900055-03637 (하나캐피탈)</div><div>(입금증 필요시 별도 요청)</div></td>
+</tr>
+<tr>
+  <td class="capital">IM캐피탈<br>
+    <a href="https://play.google.com/store/apps/details?id=com.dgbcap.moffice
+"  onclick="openCapitalLink(this.href); return false;">앱설치링크</a><br>
+    <a href="http://www.imcap.co.kr/admin/dgbLogin.do"  onclick="openCapitalLink(this.href); return false;">PC견적</a><br>
+  </td>
+  <td><div>1. 탁송업체 <br>
+1) 유림로지텍 031-658-9217 
+[현대(제네시스 포함), 카니발, K9, 스팅어, 르노] <br>
+경기도 평택시 도일유통길 20-3 <br>
+
+2) 선보 010-5461-9632 
+[카니발, K9, 스팅어 제외 기아 전차종, KGM] <br>
+경기도 평택시 서탄면 내천길 43-46 <br>
+
+3) SC글로벌 010-6297-2818, 070-4442-0900 <br><br>
+
+2. 등록업체 <br>
+1) 오토클릭 서비스 02-711-4200 
+서울 강서구 공항대로 54 <br>
+
+2) 다코스 070-7931-2860 <br>
+서울 강남구 도곡로 126, 오복빌딩 101호 <br><br>
+
+3. 렌터카 사고접수&amp;긴급출동 : 라이드 1577-0565</div></td><td><div>▣ 보증금&amp;선납금 송금계좌
+🔅고객별 가상계좌 생성 후 문자 발송 (카톡방에 요청)</div></td></tr>
+<tr>
+  <td class="capital">우리금융캐피탈<br>
+    <a href="https://wonclick.woorifcapital.com" onclick="openCapitalLink(this.href); return false;">원클릭견적</a><br>
+    <a href="https://wontalk-guest.woorifcapital.com" onclick="openCapitalLink(this.href); return false;">원톡메신저</a><br>
+
+  </td>
+  <td><div>1) 현대, 제네시스 (동운)</div><div>- 렌트 010-3639-7322, 070-4423-5886, 031-353-6018</div><div>- 리스 010-7125-7323, 070-4423-5886, 031-353-6018</div><div>- 경기 화성시 양감면 요댕이길 149-19</div><div>2) 기아, 기타 (선보)</div><div>- 010-5461-9650, 경기 평택시 서탄면 내천길 43-46</div><div>* 탁송사 통화 불가시, 문자로 요청</div>
+  <td>※ 보증/선수금 입금계좌 : 1005-704-814635 우리은행</td>
+<tr>
+  <td class="capital">롯데캐피탈<br>
+    <a href="https://auto.lottecap.com/lg" onclick="openCapitalLink(this.href); return false;">견적</a>
+  </td>
+  <td>🌱탁송사 정보 <br>
+
+  *리스_동운로지스 010-4850-7322<br> 
+  주소: 경기도 화성시 양감면 요댕이길 149-19 <br>
+
+  *렌탈_스타오토케어 031-526-2097 <br>
+  주소: 경기도 용인시 처인구 포곡읍 성산로520 <br>
+
+  *테슬라차량_ Sc글로벌070-4442-0906 <br>
+  주소: 경기도 평택시 포곡읍 석정로 266-2</div></td>  
+  <td>고객별 가상계좌 생성 후 문자 발송</td>
+</tr>
+<tr>
+  <td class="capital">KB캐피탈<br>
+    <a href="https://kbeasy.kbcapital.co.kr/ss/mm/MM010100.kbc" onclick="openCapitalLink(this.href); return false;">견적</a>
+  </td>
+  <td><div>&lt;HL홀딩스&gt; <br>
+르노, 쌍용, 쉐보레, 및 기아 일부차종 [카니발, K9, EV9, EV3]) <br>
+*물류업체명 : HL홀딩스 <br>
+-주소 : 경기도 화성시 서신면 전곡산단로 39 <br>
+-대표번호 : 1660-3477 <br><br>
+
+----------- 이외 차종은 스타오토케어 // <br>
+
+&lt;스타오토케어&gt; <br>
+- 전화 : 031-335-4003 (F. 031-338-4009) <br>
+- 주소 : 경기 용인시 처인구 포곡읍 성산로 520</div></td>
+<td><div>고객별 가상계좌 생성</div></td>
+</tr>
+<tr>
+  <td class="capital">BNK캐피탈<br>
+    <a href="https://web.bnkcapital.co.kr/view/prtn/logn/PrtnLogn010M01" onclick="openCapitalLink(this.href); return false;">견적</a>
+  </td>
+  <td><div>🚚탁송 <br>
+특판/선구매 - 웹견적 견적 산출 시 탁송사 확인 <br>
+지점/대리점 - 전차종 선보 <br>
+
+1. 동운로직스 : 070-7730-7322 <br>
+경기 화성시 양감면 요댕이길 149-19 
+(요당리30-2) <br>
+
+2. 선보 : 김연희담당 010-7553-5461 <br>
+
+3. 유림로지텍 : 김종호 담당 <br>
+070-5029-1735 / 010-9458-0716 <br>
+주소 (평택시 도일유통길 20-3)</div></td>
+<td><div>고객별 가상계좌 생성 후 문자 발송</div></td>
+</tr>
+<tr>
+  <td class="capital">우리카드<br>
+    <a href="https://m.wooricard.com/dcmw/yh1/mmb/mmb01/M1MMB201S00_AG.do" onclick="openCapitalLink(this.href); return false;">비대면조회</a>
+  </td>
+  <td><div>▶ 탁송사/사고접수 <br>
+- 삼익 : 031-335-4019 경기 용인시 처인구 포곡읍 성산로 520 <br>
+- 유림 : 031-667-9218 경기 평택시 도일유통길 20-3 <br>
+- 선보 : 070-4219-0854 경기 평택시 서탄면 내천길 43-46<br> 
+- 고객센터 : 1544-9800 <br>
+- 사고/정비 : <br>
+2019.04.30 이전실행건 -&gt; 1577-5123 <br>
+2019.05.01 이후실행건 -&gt; 1644-1199</div></td>
+<td><div>▶ 보증금/선수금 송금계좌 
+우리은행 2881-156-9118541 
+예금주명 : (주)우리카드</div></td>
+</tr>
+<tr>
+  <td class="capital">KDB 산은캐피탈<br>
+    <a href="https://auto.kdbc.co.kr/ag/al/al100000V" onclick="openCapitalLink(this.href); return false;">비대면조회</a>
+  </td>
+  <td><span class="empty">-</span></td><td><div>- 보증금/선수금 입금처 : 딜러사상계 / 캐피탈입금</div></td>
+</tr>
+<tr>
+  <td class="capital">오릭스 캐피탈<br>
+    <a href="https://nf.orix.co.kr/" onclick="openCapitalLink(this.href); return false;">비대면조회</a>
+  </td>
+  <td>
+    <div>● 집하장</div><div>경기 용인시 처인구 포곡읍 성산로 520, 스타오토케어</div><div>스타오토케어 031-335-4022</div><div>**카니발HL,스타리아 차량은 로드탁송으로 진행되오니 업무시 참고부탁드립니다.</div><div>**코일매트 미발송 : 카니발, 스타리아, 번호판배송건</div>
+  </td>
+  <td>
+    <div>● 보증금/선수금 입금</div><div>SC제일은행 4711-61200-63259</div><div>(예금주 : 오릭스캐피탈코리아)</div>
+  </td>
+</tr>
+<tr>
+  <td class="capital">JB우리캐피탈<br>
+    <a href="https://direct.wooricap.com/sale/log/mdSaleLog0010.do" onclick="openCapitalLink(this.href); return false;">모바일견적(링크확인?)</a><br>
+    <a href="https://emp.wooricap.com/" onclick="openCapitalLink(this.href); return false;">다이렉트</a>
+  </td>
+  <td>
+    <div>[탁송업체] <br>
+▶삼익 (현대차) 연락처 : 경기도 용인시 처인구 포곡읍 성산로520, 삼익로직스 031-335-4018 <br>
+
+▶(주)선보(현대 외 전차량) 연락처: 경기도 평택시 내천길 43-46 010-5461-9647</div></td>
+<td><div>[보증금 입금 계좌번호]
+농협 3010097836401 제이비우리캐피탈(주)</div></td></tr>
+<tr>
+  <td class="capital">삼성카드<br>
+    <a href="https://auto.samsungcard.com/auto/auto-rental/certificatioin/UFLCRE0114M0.jsp" onclick="openCapitalLink(this.href); return false;">본인인증</a>
+  </td>
+  <td>
+    <div>[이름] 선보 김민지 대리 주담당</div><div>[휴대전화] 010-5461-9670</div><div>[직장 팩스] 031-667-5460</div><div>[직장] 경기도 평택시 서탄면 내천길 43-46</div>
+  </td>
+  <td><div>[보증금 입금 계좌번호]</div><div>우리은행 103-05-010394 삼성카드</div></td>
+</tr>
+<tr>
+  <td class="capital">신한카드<br>
+    <a href="https://mycar.shinhancard.com/adp/ADPFM860N/ADPFM860R20.shc" onclick="openCapitalLink(this.href); return false;">견적</a>
+  </td>
+  <td><div>[등록/용품/탁송업체]<br>
+-유림로지텍(현대) 평택시 도일유통길 20-3 <br>
+유선번호 : 031-658-9217<br>
+총괄 및 정산 : 백미숙 과장 010-2483-0396 <br>
+등록 담당 : 서유진 대리 010-3846-7827<br>
+- 스타오토케어(기아/르노/ KGM/쉐보레) 경기도 용인시 처인구 포곡읍 성산로 520 <br>
+- 스타오토케어 연락처 : ☎ 031-526-7116 <br>
+등록 탁송요청 마감시간: 오후 2시까지<br><br>
+[등록/번호판배송 및 임판 반납]<br>
+오토클릭(02-711-2766) / FAX. 02-6007-1217<br>
+서울 강서구 공항대로 54 현대빌딩</div></td>
+<td><div>고객별 가상계좌 생성 후 문자 발송</div></td>
+</tr>
+</tbody>
+</table>
+
+<footer class="footer">
+    <div><strong>KLASSAUTO</strong> · Smart Mobility Information</div>
+    <div class="copyright">© 2026 KLASSAUTO. All rights reserved.</div>
+</footer>
+</div>
+</div>
+<script>
+const q = document.getElementById('search');
+const rs = [...document.querySelectorAll('#t tbody tr')];
+
+// 원래 텍스트를 저장
+rs.forEach(row => {
+    row.querySelectorAll('td').forEach(cell => {
+        cell.dataset.originalHtml = cell.innerHTML;
+    });
+});
+
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function highlightText(element, keyword) {
+    if (!keyword) return;
+
+    const regex = new RegExp('(' + escapeRegExp(keyword) + ')', 'gi');
+
+    const walker = document.createTreeWalker(
+        element,
+        NodeFilter.SHOW_TEXT,
+        {
+            acceptNode: function(node) {
+                // 이미 하이라이트된 부분은 제외
+                if (node.parentElement &&
+                    node.parentElement.closest('.search-highlight')) {
+                    return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+            }
+        }
+    );
+
+    const textNodes = [];
+    while (walker.nextNode()) {
+        textNodes.push(walker.currentNode);
+    }
+
+    textNodes.forEach(node => {
+        const text = node.nodeValue;
+
+        if (regex.test(text)) {
+            regex.lastIndex = 0;
+
+            const fragment = document.createDocumentFragment();
+            let lastIndex = 0;
+            let match;
+
+            while ((match = regex.exec(text)) !== null) {
+                fragment.appendChild(
+                    document.createTextNode(
+                        text.substring(lastIndex, match.index)
+                    )
+                );
+
+                const mark = document.createElement('span');
+                mark.className = 'search-highlight';
+                mark.textContent = match[0];
+
+                fragment.appendChild(mark);
+
+                lastIndex = match.index + match[0].length;
+            }
+
+            fragment.appendChild(
+                document.createTextNode(text.substring(lastIndex))
+            );
+
+            node.parentNode.replaceChild(fragment, node);
+        }
+    });
+}
+
+q.addEventListener('input', function() {
+
+    const keyword = this.value.trim();
+
+    rs.forEach(row => {
+
+        // 기존 하이라이트 제거
+        row.querySelectorAll('td').forEach(cell => {
+            cell.innerHTML = cell.dataset.originalHtml;
+        });
+
+        // 검색어가 없으면 전체 표시
+        if (!keyword) {
+            row.classList.remove('hide');
+            return;
+        }
+
+        // 검색어가 있는 행만 표시
+        const text = row.innerText.toLowerCase();
+
+        if (text.includes(keyword.toLowerCase())) {
+            row.classList.remove('hide');
+
+            // 검색어 노란색 표시
+            row.querySelectorAll('td').forEach(cell => {
+                highlightText(cell, keyword);
+            });
+
+        } else {
+            row.classList.add('hide');
+        }
+    });
+});
+
+let capitalTab = null;
+
+function openCapitalLink(url) {
+    // 탭이 아직 없거나 닫혔으면 새 탭 생성
+    if (capitalTab === null || capitalTab.closed) {
+        capitalTab = window.open(url, "capitalTab");
+    } else {
+        // 이미 열린 탭이 있으면 그 탭에서 이동
+        capitalTab.location.href = url;
+        capitalTab.focus();
+    }
+}
+</script></body></html>

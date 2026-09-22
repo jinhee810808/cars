@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>캐피탈사 프로모션 공지</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f7fb;color:#222;font-family: "Nanum Gothic", "나눔고딕", sans-serif}
+.wrap{max-width:1800px;margin:0 auto;padding:28px}
+h1{margin:0 0 8px;font-size:26px}
+.sub{color:#666;margin-bottom:20px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+button,input{font:inherit}
+button{border:1px solid #d5d9e2;background:#fff;border-radius:8px;padding:9px 14px;cursor:pointer}
+button.active{background:#222;color:#fff;border-color:#222}
+input{min-width:240px;border:1px solid #d5d9e2;border-radius:8px;padding:9px 12px;background:#fff}
+.table-wrap{overflow:auto;background:#fff;border:1px solid #dfe3eb;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+table{border-collapse:separate;border-spacing:0;min-width:1600px;width:100%;table-layout:fixed}
+th,td{border-right:1px solid #e4e7ec;border-bottom:1px solid #e4e7ec;padding:10px 8px;text-align:center;vertical-align:middle;font-size:13px}
+thead th{position:sticky;top:0;z-index:3;color:#fff;font-weight:700}
+thead tr:first-child th{font-size:14px;padding:12px 8px}
+.group-base{background:#343a40}
+.group-rent{background:#2563eb}
+.group-lease{background:#7c3aed}
+.sub-rent{background:#dbeafe;color:#173b76}
+.sub-lease{background:#ede9fe;color:#4c1d95}
+.note-head{background:#eef1f5;color:#374151}
+tbody tr:hover td{background:#fafbff}
+tbody td {vertical-align: top;}
+tbody td.finance{font-weight:700;text-align:left;position:sticky;left:48px;z-index:2;background:#fff}
+tbody td.no{position:sticky;left:0;z-index:2;background:#fff}
+thead .sticky1{position:sticky;left:0;z-index:5;background:#343a40}
+thead .sticky2{position:sticky;left:48px;z-index:5;background:#343a40}
+td.note{text-align:left;line-height:1.5;color:#555;white-space:normal}
+th.rate,td.rate{width:95px}
+col.no{width:48px} col.finance{width:135px}
+col.rate{width:105px} col.note{width:290px}
+.legend{display:flex;gap:16px;margin:10px 0 16px;color:#555;font-size:13px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.dot.r{background:#2563eb} .dot.l{background:#7c3aed}
+/* @media(max-width:800px){.wrap{padding:14px}h1{font-size:21px}} */
+@media(max-width:800px){
+    .wrap {
+        padding: 14px;
+    }
+
+    .header {
+        gap: 10px;
+    }
+
+    .logo {
+        width: 110px;
+    }
+
+    .header-title {
+        font-size: 21px;
+    }
+}
+.search-highlight {
+    background: #fff176;
+    color: #000;
+    font-weight: 700;
+    padding: 1px 2px;
+    border-radius: 2px;
+}
+.header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 8px;
+}
+
+.logo {
+    width: 200px;
+    height: auto;
+    display: block;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrap">
+  <!-- <h1>캐피탈사 프로모션 공지</h1> -->
+  <div class="header">
+    <img src="cars/img/unionlogo.png" alt="KLASSAUTO" class="logo">
+    <h1 class="header-title">캐피탈사 프로모션</h1>
+  </div>
+  <div class="sub">2026년 9월 금융사 운영조건 · '26.9.7(월) 최종수정</div>
+
+  <div class="toolbar">
+    <button class="active" onclick="filterRows('all',this)">전체</button>
+    <button onclick="filterRows('domestic',this)">국산</button>
+    <button onclick="filterRows('imported',this)">수입</button>
+    <input id="search" type="search" placeholder="금융사, 차종 검색..." oninput="searchRows()">
+  </div>
+
+  <div class="legend">
+    <span><i class="dot r"></i> 장기렌트</span>
+    <span><i class="dot l"></i> 리스</span>
+    <!-- <span>※ 빈칸은 원본 시트에서도 값이 없는 항목입니다.</span> -->
+  </div>
+
+  <div class="table-wrap">
+  <table id="promo">
+    <colgroup>
+      <col class="no"><col class="finance">
+      <col class="rate"><col class="rate"><col class="rate"><col class="rate"><col class="note">
+      <col class="rate"><col class="rate"><col class="rate"><col class="rate"><col class="note">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2" class="sticky1">순번</th>
+        <th rowspan="2" class="sticky2">금융사명</th>
+        <th colspan="5" class="group-rent">🚗 장기렌트</th>
+        <th colspan="5" class="group-lease">🚗 리스</th>
+      </tr>
+      <tr>
+        <th class="sub-rent">특판 · 국산</th>
+        <th class="sub-rent">특판 · 수입</th>
+        <th class="sub-rent">대리점 · 국산</th>
+        <th class="sub-rent">대리점 · 수입</th>
+        <th class="note-head">비고</th>
+        <th class="sub-lease">특판 · 국산</th>
+        <th class="sub-lease">특판 · 수입</th>
+        <th class="sub-lease">대리점 · 국산</th>
+        <th class="sub-lease">대리점 · 수입</th>
+        <th class="note-head">비고</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td class="no">1</td>
+        <td class="finance">농협캐피탈
+(NH캐피탈)</td>
+        <td>1.1%</td>
+        <td></td>
+        <td>1.1%</td>
+        <td></td>
+        <td class="note">- 추가수수료 1.1 % : G80, GV80, GV70, 그랜저, 싼타페, 카니발, 팰리세이드, 코나HEV, 니로HEV, 셀토스<br>* 웹견적 이용<br>- 추가수수료 : 1.1% 선구매 팰리세이드 특판 차종(특별 할인율/금리 적용 대상<br>-쏘렌토, 스포티지.아반떼 , k8.,투싼 HEV 포함 모든 유종 : 프로모션 없음</td>
+        <td></td>
+        <td></td>
+        <td>0.5%</td>
+        <td>2.0%</td>
+        <td class="note">★국산차 프로모션★ (전차종) – 0.50% <br>★수입차 프로모션★ (전차종) – 2.00%</td>
+      </tr>
+    
+      <tr>
+        <td class="no">2</td>
+        <td class="finance">롯데렌터카</td>
+        <td>1.0%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">■ 전략인기차종 추가 1% 수수료 지급 (전기차 제외) <br>→ 현대 : 아반떼, 그랜져, 코나, 투싼, 싼타페, 스타리아 <br>→ 기아 : 셀토스, 스포티지, 쏘렌토, 카니발</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note"></td>
+      </tr>
+    
+      <tr>
+        <td class="no">3</td>
+        <td class="finance">롯데오토리스</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★선구매 프로모션★ <br>└ 선구매 차량 진행 시 추가수수료 50만원<br>취득원가X 지급율적용 후 지급 (국산차는 차량가액X지급율 적용 후 지급)</td>
+      </tr>
+    
+      <tr>
+        <td class="no">4</td>
+        <td class="finance">롯데캐피탈</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★36개월 전차종 프로모션★ - 취급액 * 0.3%<br>★48개월 이상 전차종★ - 취급액 * 0.5%<br>(L-AUTO 견적내기 → 재고리스트에서 프로모션 확인가능) <br>* 테슬라 슬라이딩, 추가수수료 지급X / 36개월 미만 지급 X / 보증, 선납 50% 이상 지급 X <br>* 보증금/선납율에 따른 금리 미상향 취급건은 지급 X</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note"></td>
+      </tr>
+    
+      <tr>
+        <td class="no">5</td>
+        <td class="finance">메리츠캐피탈</td>
+        <td>1.0%</td>
+        <td></td>
+        <td>1.8%</td>
+        <td></td>
+        <td class="note">★국산렌트 추가수수료★ - 1.00% <br>★국산렌트 대리점출고 추가수수료★ - 1.80% (선구매는 1.00%)</td>
+        <td>1.0%</td>
+        <td></td>
+        <td></td>
+        <td>1.0%</td>
+        <td class="note">★수입차 프로모션★ – 0.5%<br>★국산리스 대리점출고 추가수수료★ – 1.00%</td>
+      </tr>
+    
+      <tr>
+        <td class="no">6</td>
+        <td class="finance">KDB산은캐피탈</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note"></td>
+      </tr>
+    
+      <tr>
+        <td class="no">7</td>
+        <td class="finance">삼성카드</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★ 렌트&amp;리스 특별 시책운영 ★ <br>└ 3천만원 이상 - 50만원 <br>└ 4천만원 이상 – 100만원 <br>└ 6천만원 이상 – 150만원 <br>└ 8천만원 이상 – 250만원 <br>└ 쏘렌토 하이브리드 대상 상기 시책금 외 추가 50만원 지급 <br>* 상기기간 실행일 기준, 부가세 포함, 특판,대리점 출고 조건 모두 해당, Tesla 차량 제외 <br>-개소세 할인된 소비자가격 기준, 예산 소진시 종료</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★ 렌트&amp;리스 특별 시책운영 ★ <br>└ 3천만원 이상 - 50만원 <br>└ 4천만원 이상 – 100만원 <br>└ 6천만원 이상 – 150만원 <br>└ 8천만원 이상 – 250만원 <br>└ 쏘렌토 하이브리드 대상 상기 시책금 외 추가 50만원 지급 <br>* 상기기간 실행일 기준, 부가세 포함, 특판,대리점 출고 조건 모두 해당, Tesla 차량 제외 <br>-개소세 할인된 소비자가격 기준, 예산 소진시 종료</td>
+      </tr>
+    
+      <tr>
+        <td class="no">8</td>
+        <td class="finance">신한카드</td>
+        <td>0.8%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">
+          &lt;수도권 국산&gt; <br>★인센티브 프로모션★ <br>└ 총 인센티브(CA+판매사원) 3% 이하 – 0.8% <br>└ 국산차(대리점/본사출고), 수입차(Captive/Non-Captive), Direct/Network 포함, 전기차 <br>* 재렌트 및 정규직 영업건 제외 <br><br>
+          수도권 2금융포스트 프로모션(9/7(월)공지)<br>
+          국산렌트 지점프로모션:취득원가4천이상 0.1%지급, <br>
+          취득원가 4천미만 0.5%지급/<br>
+          본사프로모션 취득원가4천이상0.4%지급/<br>
+          국산렌트 총인센3%이하 추가0.8%지급<br><br>
+
+          &lt;수도권 수입 &gt; <br>★이슈수수료 프로모션★ <br>└ 총 수수료 3P이하(CM+CA) – 0.8% <br>* 대출실행일 기준 지급 / 취득원가 기준 지급, 지급조건 : CA+CM 총 인센티브 3% 이하 건 <br>단, MyCar금융센터 취급건은 0.5%만 지급 / 이슈 프로모션+ 아우디 프로모션 중복지급가능 / 재렌트 제외
+          
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★리스 프로모션★<br>&lt;수도권 국산&gt;<br>└ 취득원가 4천만원 이상 X 0.50%<br>* CA지급, 세액CA부담, 금융리스 제외, Max 40만원└ (수도1)취득원가 4천만원 이상 X 0.30%<br>
+          <br>&lt;수도권 수입&gt;<br>
+          : 9/7(월) 공지, 수도권1금융포스트 프로모션<br>└ 본사 : 취득원가 8천만원미만 Non-captive – 1.00%<br>└ 본사 : 취득원가 8천만원이상 Non-captive (벤츠, BMW, 포르쉐) – 2.00%<br>└ 포스트 : 취득원가 8천만원이상 Non-captive 外 – 1.7%<br></td>
+      </tr>
+    
+      <tr>
+        <td class="no">9</td>
+        <td class="finance">오릭스캐피탈</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★선구매 렌트&amp;리스 프로모션★<br>└ 선구매 - 차량별 1~2% 지급 (이벤트차량 웹 메모에서 확인 가능)</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">* 리스는 수수료 최대 12%이내 지급 (추가수수료 포함) / 국산렌트 - 할인전 차량가 / 그외 - 취득원가</td>
+      </tr>
+    
+      <tr>
+        <td class="no">10</td>
+        <td class="finance">우리금융캐피탈</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">국산리스 취급대당 0.30%</td>
+      </tr>
+    
+      <tr>
+        <td class="no">11</td>
+        <td class="finance">
+          우리카드<BR>
+          7월8일~  
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">렌트 취급 중단</td>
+        <td>1.5%</td>
+        <td></td>
+        <td>1.5%</td>
+        <td></td>
+        <td class="note">★국산 운용리스 추가수수료★ <br>└ 당사 명의 <br>- 대리점/특판 : 전 브랜드 – 1.50% <br>└ 이용자 명의 <br>- 대리점 : 전 브랜드 – 0.50% <br>★수입 운용리스 추가수수료★ <br>└ 일반상품(취득원가 1억 미만 – 0.70%) <br>└ 일반상품(취득원가 1억~2억 미만 – 0.80%) <br>└ 일반상품(취득원가 2억 이상 – 1.00%)<br>└ 고IRR상품(취득원가 관계없음 - 2.5%)</td>
+      </tr>
+    
+      <tr>
+        <td class="no">12</td>
+        <td class="finance">하나캐피탈</td>
+        <td>1.2%</td>
+        <td>1.0%</td>
+        <td>0.7%</td>
+        <td></td>
+        <td class="note">★국산차(특판) 프로모션★ - 1.20%<br>★국산차(대리점) 프로모션★ - 0.70%<br>★수입차 프로모션★ - 1.00%<br>타겟차종 프로모션 (변동) <br>- 쏘렌토/카니발/그랜저/팰리세이드 <br>-&gt; 대당 50만원추가 <br>※ 8.1~8.10 선급분 G80 <br>※ 8.11~8.31 선급분 팰리세이드 <br>※ 그랜저(★구형, 선구매분만 해당함★)<br>★장기재고 프로모션★<br>└ 하나캐피탈 별도 리스트 참조<br>* 계약번호/차종 별도 참고 / 재고 소진시 장기 프로모션 종료 / 타겟차종 프로모션 중복지급 불가<br><br>* 월 취급대수 기준 / 차량가격 X 프로모션율</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">
+          9/7(월) 공지<br>
+          ★26.9월 국산/수입차 운영조건★(26.9.1~9.30) <br>
+          <br>
+          ◆ 국산차 (운영irr 소폭인하)<br>
+          1) 운용리스<br>
+            - 프로모션 <br>
+          : 추가수수료 <br>
+            제네시스 : ★2.5%★<br>
+            제네시스 외 : ★2.2%★<br>            
+          2) 금융리스/할부/론<br>
+            - 차주별 등급별 금리 차등<br>
+            :[12개월] 6.0%~18.4%<br>
+              [24개월] 6.5%~19.0%<br>
+              [36-60개월] 6.1%~ 19.2%<br>
+            - 12개월 : 수수료 미지급<br>
+                24개월 : 0.3%<br>
+                36개월 이상 : 1.0%<br><br>
+          
+          ◆ 수입차 (운영irr 일부인상)<br>
+          1) 운용리스 추가수수료 ★2.0%★<br>
+          - 일부차종 1.0~1.5% (로터스 외)<br>            
+          2) 금융리스/할부/론<br>
+            - 차주별 등급별 금리 차등<br>
+              : [12개월] 6.4%~12.9%<br>
+                [24개월] 6.9%~13.5%<br>
+                [36~60개월] 6.6%~ 13.7%<br>
+            - 12개월 : 수수료 미지급<br>
+                24개월 : 0.5%<br>
+                36개월 이상 : 1.0%<br> 
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="no">13</td>
+        <td class="finance">현대캐피탈
+플릿</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">국산 렌트. 리스 : 2%[4천 미만]2.5% [4천 초과 ]<br>*일반 출고 1.5% [ 4천 미만] 2%[ 4천 초과]<br>* 부가세 포함 <br>신규 법인 3%+수입차 3%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">국산 렌트. 리스 : 2%<br>외산차 : 3%<br>* 부가세 포함</td>
+      </tr>
+    
+      <tr>
+        <td class="no">14</td>
+        <td class="finance">BNK캐피탈</td>
+        <td>1.0%</td>
+        <td>1.0%</td>
+        <td>0.5%</td>
+        <td>0.5%</td>
+        <td class="note">★렌트 선구매 차종 프로모션★<br>└ 일반차종 : 특판 - 1.00% / 대리점 – 0.50%<br>* 수입차종(테슬라 한정)<br>* 벽제(레이, 셀토스, 카니발7인승, EV4) └ 특별차종 : - 그랑콜레오스 : 1월 1대 200만원 / 4월 1대 100만원<br>- 팰리세이드 : (1대) 200만원<br>- 아이오닉9 : (3월출고 3대) 100만원<br>- 싼타페 : (LCC60125) 100만원<br>- 폴스타 : (1대) 200만원<br>* 중복지급 없음, 수수료 7%이상 지급 없음, 특별차종 7%이상 취급 시 차종지원금은 지급<br>★일반발주 프로모션★<br>└ 국산(현대, 기아, 르노) : 특판 – 1.00% / 대리점 – 1.00%<br>* 중복지급 없음, 수수료 7%이상 지급 없음, 특별차종 7%이상 취급 시 차종지원금은 지급<br>└ 수입(폴스타, 테슬라 사전 모객건 한정) - 1.00%</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">② 리스 <br>★CM지급 프로모션★<br>└ 벤츠 : 전체 딜러사 – GLC, GLE, GLS - 2.00% / 그 외 - 1.80% <br>└ 포르쉐 : 전체 딜러사 – 카이엔, 파나메라 - 2.00% / 그 외 - 1.80% <br>└ BMW(미니제외) : 전 차종/전체 딜러사 – 1.80% <br>└ 아우디 : 전 차종/전체 딜러사 – 1.20% <br>└ 포드/링컨 : 선인자동차 / 익스플로러 – 1.00%, 에비에이터 – 0.50%<br>★AG지급 프로모션★<br>└ 국산차 : 전체 딜러사 – 프로모션 1.0% (카드결제 限)</td>
+      </tr>
+    
+      <tr>
+        <td class="no">15</td>
+        <td class="finance">iM캐피탈</td>
+        <td>1.8%</td>
+        <td></td>
+        <td>1.5%</td>
+        <td></td>
+        <td class="note">
+          [국산 렌트] 9/7(월) 공지<BR>
+          (선구매) 그랜저(F/C)(HEV제외) 2.3% <BR>
+          (선구매) 그랜저(구형)(HEV) 150만원 정액<BR>
+          (선구매) 그랑콜레오스 200만원 정액<BR>
+          (선구매) 아르카나 130만원 정액<BR>
+          (A군) 쏘렌토, 그랜저, 카니발, 팰리세이드, 싼타페, 스포티지, 아반떼 투싼 1%<BR>
+          (B군) 셀토스, 그랑콜레오스, K5, G80, GV70, GV80, EV전차종 1%<BR>
+          (C군) 그외 차종 1%<BR>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">
+          [국산 리스] 9/7(월) 공지<BR>
+          (A군) G80, GV70, GV80, 팰리세이드, 쏘렌토, 카니발, 싼타페, 그랜저 2.2%<BR>
+          (B군) 현대/기아 전차종, G70, G90 2.2%<BR>
+          (C군) 그 외 2.2%<BR><BR>
+
+          [수입 리스] 9/7(월) 공지<BR>
+          (A군) 벤츠,BMW, 포르쉐, 재규어랜드로버, 캐딜락, 아우디, 렉서스 2.0% <a href="cars/img/im09.jpg" target="_blank">(뭐가 복잡함, 사진참조)</a><BR>
+          (B군) 폭스바겐, 볼보 1.4%<BR>
+          (C군) 포드, 롤스로이스, 벤틀리 1.2%<BR>
+          (D군) 그 外 1.0%<BR>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="no">16</td>
+        <td class="finance">JB우리캐피탈</td>
+        <td>1.5%</td>
+        <td></td>
+        <td>1.5%</td>
+        <td></td>
+        <td class="note">★렌트 프로모션★ - 건당 1.50% <br>★자유반납형 상품 출시★ - (36 / 48개월) → 건당 30만원 <br>* 국산+수입 금액 기준 <br>* 수수료율 적용 기준 : 실적구간별 수수료율 X 시판가(할인전 차량가)</td>
+        <td></td>
+        <td></td>
+        <td>1.0%</td>
+        <td>2.0%</td>
+        <td class="note">★리스 인센티브★ - 국산 1.00%, 수입 2.00% <br>★이용자명의 리스 추가 인센티브★ - 건당 50만원 <br>★선구매 추가 인센티브★ <br>└ BMW : X5 – 500만원 <br>└ 팰리세이드 - 50만원 <br>★자유반납형 상품 출시★ <br>└ 국산승용 전차종 &amp; 수입차 일부 차종 <br>- BMW (5, 3 시리즈, X3), BENZ(C-Class, E-Class, GLC), 렉서스(ES), 볼보(XC40, 60), 아우디(A6) 폭스바겐(티구안), 테슬라(3, Y, YL) <br>└ 60개월 계약 – 36 / 48개월 이후 반납 시 중도해지 패널티 면제 <br>ex) 기본인센 +(국산+1.20% / 수입+0.2%) = 합 2.20% 추가지급 <br>★이용자명의 하나카드 연동 프로모션★ <br>└ 고객 – 0.2% / AG – 1.3%</td>
+      </tr>
+    
+      <tr>
+        <td class="no">17</td>
+        <td class="finance">KB 캐피탈</td>
+        <td>1.0%</td>
+        <td></td>
+        <td>0.8%</td>
+        <td></td>
+        <td class="note">★현대/기아/제네시스 프로모션★ 특판출고 - 1.00% / 대리점출고 – 0.80% <br>★선구매★ 모델Y / 그랑콜레오스 / 필랑트 – 0.80% <br>★추가 프로모션★ <br>└ 장기재고차량 – 30~300만원</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★CM 프로모션★ <br>└ 벤츠+포르쉐+전 딜러사+캐딜락 - 2.00% <br>└ 그 외 기타 비전속 브랜드 - 1.00% <br>* 단, 저금리 프로모션 상품 진행시 추가수수료 대상 제외 <br>* 테슬라 SC 추가수수료 프로모션 미지급</td>
+      </tr>
+    
+      <tr>
+        <td class="no">18</td>
+        <td class="finance">MG캐피탈</td>
+        <td></td>
+        <td></td>
+        <td>0.8%</td>
+        <td></td>
+        <td class="note">&lt;장기렌터카&gt;<br><br>렌트 <br>★대리점/특판 출고 프로모션★ <br>└ 내연기관 차량(하이브리드 포함) - 0.8% <br>└ 전기 차량 – 1.5% <br>* 차량가액 X 수수료 차등적용 <br>★선구매 프로모션★ <br>└ 선구매차 5~6월 출고분 – 0.5% <br>* 선구매차 수수료는 추가수수료 포함 지급 <br>★필랑트 프로모션★ <br>└ 필랑트 3대(4월출고) - 200만원</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="note">★리스 프로모션★ <br>└ 벤츠, BMW, 볼보 – 1.50%</td>
+      </tr>
+    
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<script>
+let currentFilter='all';
+function applyFilter(){
+    const q = document.getElementById('search').value.trim().toLowerCase();
+
+    document.querySelectorAll('#promo tbody tr').forEach(tr => {
+        const cells = tr.children;
+
+        const company = cells[1].innerText.toLowerCase();
+        const rentNote = cells[6].innerText.toLowerCase();
+        const leaseNote = cells[11].innerText.toLowerCase();
+
+        let ok = true;
+
+        if (currentFilter === 'domestic') {
+            ok = cells[2].innerText || cells[4].innerText ||
+                 cells[7].innerText || cells[9].innerText;
+        }
+
+        if (currentFilter === 'imported') {
+            ok = cells[3].innerText || cells[5].innerText ||
+                 cells[8].innerText || cells[10].innerText;
+        }
+
+        if (q) {
+            const searchText =
+                company + " " + rentNote + " " + leaseNote;
+
+            ok = ok && searchText.includes(q);
+        }
+
+        tr.style.display = ok ? '' : 'none';
+
+        // 검색어 하이라이트
+        highlightText(cells[1], q);
+        highlightText(cells[6], q);
+        highlightText(cells[11], q);
+    });
+}
+function filterRows(type,btn){
+  currentFilter=type;
+  document.querySelectorAll('.toolbar button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+function searchRows(){applyFilter();}
+
+function highlightText(element, keyword) {
+    // 기존 하이라이트 제거
+    element.innerHTML = element.innerHTML.replace(
+        /<mark class="search-highlight">([\s\S]*?)<\/mark>/gi,
+        '$1'
+    );
+
+    if (!keyword) return;
+
+    const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'gi');
+
+    element.innerHTML = element.innerHTML.replace(
+        regex,
+        '<mark class="search-highlight">$1</mark>'
+    );
+}
+</script>
+</body>
+</html>

@@ -1,4 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KlassAuto 차량 관리 시스템 (통합 프로토타입 v21)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans min-h-screen p-3 sm:p-6 flex flex-col items-center">
+
+    <div id="proto-switcher-bar" class="w-full bg-gray-900 text-white p-3 rounded-xl mb-5 flex justify-between items-center shadow-md text-xs sm:text-sm px-6 hidden">
+        <span class="font-bold text-yellow-400">🛠️ 프로토타입 화면 스위처</span>
+        <div class="space-x-2">
+            <button onclick="switchViewMode('user')" id="btn-view-user" class="bg-blue-600 px-3 py-1.5 rounded font-bold">📱 모바일 직원 화면</button>
+            <button onclick="switchViewMode('admin')" id="btn-view-admin" class="bg-gray-600 hover:bg-gray-700 px-3 py-1.5 rounded font-bold">💻 PC 관리자(Admin) 화면</button>
+        </div>
     </div>
+
+    <div id="user-view-container" class="w-full max-w-md bg-white min-h-[85vh] shadow-xl flex flex-col relative rounded-2xl overflow-hidden pb-16">
+        
+        <div id="login-screen" class="flex-1 flex flex-col justify-center px-6 py-12">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-blue-600 tracking-tight">KlassAuto</h1>
+                <p class="text-gray-500 mt-2 text-sm">업무용 차량 관리 시스템 (직원용)</p>
+            </div>
+            
+            <form id="login-form" class="space-y-4" onsubmit="handleLogin(event)">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">아이디</label>
+                    <input type="text" id="user-id" required class="w-full p-3 border rounded-lg text-sm" placeholder="마스터: admin / 일반: klass1">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">비밀번호</label>
+                    <input type="password" id="user-pw" required class="w-full p-3 border rounded-lg text-sm" placeholder="비밀번호 입력">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3.5 rounded-lg font-bold text-sm shadow-md">
+                    로그인
+                </button>
+            </form>
+            <p id="login-error" class="text-red-500 text-xs text-center mt-3 hidden">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+        </div>
+
+        <div id="main-screen" class="flex-1 flex flex-col hidden">
+            <header class="bg-blue-600 text-white px-4 py-4 flex justify-between items-center shadow-md">
+                <div>
+                    <span id="welcome-msg" class="font-bold text-sm">안녕하세요</span>
+                    <p id="branch-msg" class="text-[11px] text-blue-200 font-medium"></p>
+                </div>
+                <button onclick="handleLogout()" class="text-xs bg-blue-700 hover:bg-blue-800 px-3 py-1.5 rounded-md font-medium">로그아웃</button>
+            </header>
+
+            <main class="flex-1 p-4 space-y-5 overflow-y-auto max-h-[62vh]">
+                <div class="bg-blue-50 border border-blue-200 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+                    <div>
+                        <span class="block text-[11px] font-bold text-blue-500 uppercase tracking-wider">현재 지점 배정 차량</span>
+                        <div id="matched-vehicle-display" class="text-base font-extrabold text-gray-800 mt-0.5">차량 정보 없음</div>
+                    </div>
+                    <span class="text-2xl">🚗</span>
+                </div>
+
+                <div class="flex border-b">
+                    <button id="tab-drive" onclick="switchTab('drive')" class="flex-1 text-center py-3 font-bold text-sm border-b-2 border-blue-600 text-blue-600">📋 운행 기록</button>
+                    <button id="tab-expense" onclick="switchTab('expense')" class="flex-1 text-center py-3 font-bold text-sm border-b-2 border-transparent text-gray-400">💳 지출 / 정비</button>
+                </div>
+
+                <form id="log-form" onsubmit="handleSubmit(event)" class="space-y-4">
+                    <input type="hidden" id="log-type" value="운행">
+                    <div id="drive-fields" class="space-y-4">
+                        <div class="bg-blue-50/50 p-3 rounded-lg border border-blue-100 space-y-3">
+                            <span class="text-xs font-bold text-blue-700 block">🛫 출발 (사용시작)</span>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="date" id="start-date" class="w-full p-2.5 border rounded-lg text-sm">
+                                <input type="time" id="start-time" class="w-full p-2.5 border rounded-lg text-sm">
+                            </div>
+                            <input type="number" id="start-km" class="w-full p-2.5 border rounded-lg text-sm" placeholder="출발 키로수 (km)" inputmode="numeric" pattern="[0-9]*">
+                            <input type="file" id="start-photo" accept="image/*" class="w-full text-xs text-gray-500 border p-1.5 rounded-lg bg-white">
+                        </div>
+                        <div class="bg-green-50/50 p-3 rounded-lg border border-green-100 space-y-3">
+                            <span class="text-xs font-bold text-green-700 block">🛬 도착 (사용종료)</span>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="date" id="end-date" class="w-full p-2.5 border rounded-lg text-sm">
+                                <input type="time" id="end-time" class="w-full p-2.5 border rounded-lg text-sm">
+                            </div>
+                            <input type="number" id="end-km" class="w-full p-2.5 border rounded-lg text-sm" placeholder="도착 키로수 (km)" inputmode="numeric" pattern="[0-9]*">
+                            <input type="file" id="end-photo" accept="image/*" class="w-full text-xs text-gray-500 border p-1.5 rounded-lg bg-white">
+                        </div>
+                        <select id="drive-purpose" class="w-full p-3 border rounded-lg bg-white text-sm">
+                            <option value="일반업무용">업무용</option>
+                            <option value="출퇴근용">출퇴근용</option>
+                            <option value="개인용">개인용</option>
+                        </select>
+                    </div>
+                    <div id="expense-fields" class="space-y-4 hidden">
+                        <input type="date" id="expense-date" class="w-full p-3 border rounded-lg text-sm">
+                        <select id="expense-type" class="w-full p-3 border rounded-lg bg-white text-sm">
+                            <option value="주유비">주유비</option>
+                            <option value="통행료">통행료</option>
+                            <option value="주차비">주차비</option>
+                            <option value="정비비">정비비</option>
+                        </select>
+                        <input type="number" id="amount" class="w-full p-3 border rounded-lg text-sm" placeholder="지출 금액 (원)">
+                        <input type="file" id="expense-photo" accept="image/*" class="w-full text-xs text-gray-500 border p-2 rounded-lg bg-gray-50">
+                    </div>
+                    <input type="text" id="content-memo" class="w-full p-3 border rounded-lg text-sm" placeholder="상세 내역 / 메모 입력">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-lg font-bold shadow-md">기록 등록하기</button>
+                </form>
+                <hr class="border-gray-200">
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-gray-700">📊 최근 차량 내역 <span id="history-count" class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-full">0</span></h3>
+                        <button onclick="navigateTo('history')" class="text-xs font-bold text-blue-600">사용 내역 더보기 ➡️</button>
+                    </div>
+                    <div id="main-history-summary" class="space-y-3 pb-6"></div>
+                </div>
+            </main>
+        </div>
+
+        <div id="history-screen" class="flex-1 flex flex-col hidden bg-gray-50">
+            <header class="bg-gray-800 text-white px-4 py-4 flex items-center gap-3">
+                <button onclick="navigateTo('main')" class="text-xs bg-gray-700 px-3 py-1.5 rounded font-bold">⬅️ 돌아가기</button>
+                <div>
+                    <h2 class="font-bold text-sm" id="history-screen-title">전체 사용 내역</h2>
+                </div>
+            </header>
+            <main class="flex-1 p-4 space-y-4 overflow-y-auto max-h-[62vh]">
+                <div id="full-history-list" class="space-y-3 pb-6"></div>
+            </main>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-r from-blue-900 to-indigo-900 text-white flex items-center justify-between px-4 shadow-2xl border-t border-indigo-700/50 z-50">
+            <div class="flex items-center gap-2">
+                <span class="text-lg">⚡</span>
+                <div>
+                    <div class="text-[11px] font-black tracking-wide text-blue-300 uppercase">KlassAuto Premium Rental</div>
+                    <div class="text-[10px] text-gray-200 font-medium tracking-tight">신차 장기렌트 & 리스 실시간 최저가 맞춤 설계</div>
+                </div>
+            </div>
+            <a href="http://klassauto.com/index.php" target="_blank" class="bg-blue-500 hover:bg-blue-600 text-white font-extrabold text-[10px] px-2.5 py-1.5 rounded-lg shadow-sm transition">
+                바로가기
+            </a>
+        </div>
+    </div>
+
+
+    <div id="admin-view-container" class="w-full flex flex-col lg:flex-row items-start gap-6 px-2 sm:px-4 hidden">
+        
+        <div class="w-full lg:w-60 lg:sticky lg:top-6 bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-2xl p-4 space-y-4 shadow-md shrink-0">
+            <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                <span class="text-xs font-black text-gray-500 uppercase tracking-wider flex items-center gap-1">
+                    <span>📢</span> 사내 공지 / 광고
+                </span>
+                <span class="text-[9px] bg-gray-200 text-gray-600 font-semibold px-1 rounded">AD</span>
+            </div>
+            
+            <div class="bg-white border rounded-xl p-3 text-center space-y-2 shadow-inner">
+                <div class="text-base font-black text-blue-600 tracking-tight">KlassAuto</div>
+                <p class="text-[11px] text-gray-500 leading-relaxed font-medium">큰일났다 클났어 클라스오토!<br>최상의 자동차 클라스오토입니다<br>신차구매/장기렌트/리스</p>
+                <a href="http://klassauto.com/index.php" class="inline-block text-[10px] bg-blue-600 text-white font-bold px-3 py-1 rounded-md mt-1 hover:bg-blue-700 transition" target="_blank">자세히 보기</a>
+            </div>
+
+            <div class="bg-gray-800 text-white border rounded-xl p-3.5 text-center space-y-2 shadow">
+                <div class="text-xs font-extrabold text-yellow-400">💡 서버 연동 안내</div>
+                <p class="text-[11px] text-gray-300 leading-relaxed">UI 확정 후 백엔드 서버(PHP/MySQL) 데이터 결합 준비 단계입니다.</p>
+            </div>
+        </div>
+
+        <div class="flex-1 bg-white border border-gray-200 shadow-xl rounded-2xl p-6 space-y-6 w-full flex flex-col justify-between min-h-[85vh]">
+            
+            <div class="space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-5 gap-3">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-2xl font-black text-gray-900 tracking-tight">업무차량 운행대장 center</h1>
+                            <span class="bg-red-500 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-md uppercase tracking-wider">PC Web Admin</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">지점 제어, 차량 입고, 전 지점 직원 권한 발급 및 계정 제외를 총괄 제어하는 통합 본부 제어판입니다.</p>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="bg-gray-50 border rounded-xl p-2.5 px-4 flex items-center gap-4 text-xs sm:text-sm">
+                            <div><span class="text-gray-400">인가 지점</span> <b class="text-emerald-600 ml-1" id="admin-summary-branches">0개</b></div>
+                            <div class="w-px h-4 bg-gray-200"></div>
+                            <div><span class="text-gray-400">등록 차량</span> <b class="text-blue-600 ml-1" id="admin-summary-cars">0대</b></div>
+                            <div class="w-px h-4 bg-gray-200"></div>
+                            <div><span class="text-gray-400">사내 직원수</span> <b class="text-teal-600 ml-1" id="admin-summary-staffs">0명</b></div>
+                            <div class="w-px h-4 bg-gray-200"></div>
+                            <div><span class="text-gray-400">전체 기록수</span> <b class="text-indigo-600 ml-1" id="admin-summary-logs">0건</b></div>
+                        </div>
+                        
+                        <button onclick="handleLogout()" class="bg-gray-700 hover:bg-gray-800 text-white font-bold text-xs px-4 py-3 rounded-xl shadow transition shrink-0">
+                            🔓 로그아웃
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50/50 border border-emerald-200 p-5 rounded-2xl space-y-4">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-emerald-900 flex items-center gap-1.5">🏢 전사 지점 및 영업소 인가 통제 (넣기 / 빼기)</h3>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                         <form onsubmit="handleAdminAddBranch(event)" class="flex gap-2 bg-white p-2 rounded-xl border border-emerald-200">
                             <input type="text" id="new-branch-name" required class="flex-1 p-2 text-sm rounded-lg border-none focus:outline-none focus:ring-0" placeholder="추가할 지점명 (예: 강남점)">
